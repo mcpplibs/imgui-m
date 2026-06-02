@@ -1,0 +1,11 @@
+[package]
+name        = "imgui-glfw-opengl3"
+version     = "0.1.0"
+description = "GLFW and OpenGL3 consumer for imgui backend modules"
+license     = "MIT"
+
+[toolchain]
+linux = "llvm@20.1.7"
+
+[dependencies]
+imgui = { path = "../.." }

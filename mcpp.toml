@@ -1,0 +1,31 @@
+[package]
+name        = "imgui"
+version     = "0.0.1"
+description = "Dear ImGui core and GLFW/OpenGL3 backend modules for mcpp"
+license     = "MIT"
+authors     = ["imgui module contributors"]
+repo        = "https://github.com/mcpplibs/imgui-m"
+
+[lib]
+path = "src/core.cppm"
+
+[toolchain]
+linux = "llvm@20.1.7"
+
+[build]
+sources = [
+  "src/core.cppm",
+  "src/backends/glfw.cppm",
+  "src/backends/opengl3.cppm",
+  "src/backends/glfw_opengl3.cppm",
+  "src/backends/glfw_impl.cpp",
+  "src/backends/opengl3_impl.cpp",
+]
+
+[dependencies]
+compat.imgui = "1.92.8"
+compat.glfw = "3.4"
+compat.opengl = "2026.05.31"
+
+[dev-dependencies]
+compat.gtest = "1.15.2"
