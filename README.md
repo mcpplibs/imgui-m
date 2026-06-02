@@ -45,8 +45,22 @@ Dear ImGui 1.92.8 module frame ok
 
 ## Backend Example
 
-The GLFW/OpenGL3 example builds on CI but should be run only in an environment
-with a working display and OpenGL context:
+The minimal GLFW/OpenGL3 window example uses the combined backend module and
+does not use `#include` in consumer code:
+
+```bash
+cd examples/minimal_window
+mcpp build
+mcpp run
+```
+
+It requires an OpenGL runtime that is visible to the mcpp/xlings runtime. If
+GLFW cannot create the window, the example prints the GLFW error text. The
+`compat.opengl` package supplies OpenGL registry/header content; it does not
+bundle a platform `libGL`/GLX runtime.
+
+The larger GLFW/OpenGL3 example builds on CI but should be run only in an
+environment with a working display and OpenGL context:
 
 ```bash
 cd examples/glfw_opengl3
@@ -94,6 +108,7 @@ The `0.0.1` release state is verified with mcpp `0.0.44`:
 - `mcpp build`
 - `mcpp test`
 - `cd examples/basic && mcpp run`
+- `cd examples/minimal_window && mcpp build`
 - `cd examples/glfw_opengl3 && mcpp build`
 
 ## License

@@ -48,6 +48,11 @@ jobs:
           cd examples/basic
           mcpp run
 
+      - name: Build minimal window example
+        run: |
+          cd examples/minimal_window
+          mcpp build
+
       - name: Build GLFW/OpenGL3 example
         run: |
           cd examples/glfw_opengl3

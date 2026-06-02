@@ -34,6 +34,7 @@ upstream source ownership in compat packages.
 |   `-- backend_test.cpp
 `-- examples/
     |-- basic/
+    |-- minimal_window/
     `-- glfw_opengl3/
 ```
 
@@ -81,9 +82,10 @@ Primary proof points:
 mcpp build
 mcpp test
 cd examples/basic && mcpp run
+cd ../minimal_window && mcpp build
 cd ../glfw_opengl3 && mcpp build
 ```
 
-The GLFW/OpenGL3 example is a real windowed example. It is build-checked in
-headless CI and intended to be run on a machine with a working display/OpenGL
-context.
+The minimal and full GLFW/OpenGL3 examples are real windowed examples. They are
+build-checked in headless CI and intended to be run on a machine with a working
+display/OpenGL context.

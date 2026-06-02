@@ -16,6 +16,7 @@ TEST(ImGuiGlfwBackendModuleTest, ExposesPlatformApi) {
     auto restoreCallbacks = &ImGui::Backend::Glfw::RestoreCallbacks;
     auto getContentScaleForWindow = &ImGui::Backend::Glfw::GetContentScaleForWindow;
     auto getContentScaleForMonitor = &ImGui::Backend::Glfw::GetContentScaleForMonitor;
+    auto getError = &ImGui::Backend::Glfw::GetError;
 
     EXPECT_EQ(window, nullptr);
     EXPECT_EQ(monitor, nullptr);
@@ -26,6 +27,7 @@ TEST(ImGuiGlfwBackendModuleTest, ExposesPlatformApi) {
     EXPECT_NE(restoreCallbacks, nullptr);
     EXPECT_NE(getContentScaleForWindow, nullptr);
     EXPECT_NE(getContentScaleForMonitor, nullptr);
+    EXPECT_NE(getError, nullptr);
 }
 
 TEST(ImGuiOpenGL3BackendModuleTest, ExposesRendererApi) {
@@ -52,6 +54,7 @@ TEST(ImGuiGlfwOpenGL3BackendModuleTest, ExposesCombinedApi) {
     auto shutdown = &ImGui::Backend::GlfwOpenGL3::Shutdown;
     auto newFrame = &ImGui::Backend::GlfwOpenGL3::NewFrame;
     auto renderDrawData = &ImGui::Backend::GlfwOpenGL3::RenderDrawData;
+    auto getError = &ImGui::Backend::GlfwOpenGL3::GetError;
 
     EXPECT_NE(initGlfw, nullptr);
     EXPECT_NE(terminateGlfw, nullptr);
@@ -64,4 +67,5 @@ TEST(ImGuiGlfwOpenGL3BackendModuleTest, ExposesCombinedApi) {
     EXPECT_NE(shutdown, nullptr);
     EXPECT_NE(newFrame, nullptr);
     EXPECT_NE(renderDrawData, nullptr);
+    EXPECT_NE(getError, nullptr);
 }
