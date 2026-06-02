@@ -24,6 +24,10 @@ export namespace ImGui::Backend::Glfw {
         return glfwGetVersionString();
     }
 
+    int GetError(const char** description) {
+        return glfwGetError(description);
+    }
+
     void DefaultWindowHints() {
         glfwDefaultWindowHints();
     }

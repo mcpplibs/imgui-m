@@ -20,6 +20,10 @@ export namespace ImGui::Backend::GlfwOpenGL3 {
         return Glfw::GlfwVersionString();
     }
 
+    int GetError(const char** description) {
+        return Glfw::GetError(description);
+    }
+
     void DefaultWindowHints() {
         Glfw::DefaultWindowHints();
     }

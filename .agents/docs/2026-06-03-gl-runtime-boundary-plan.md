@@ -26,14 +26,14 @@ it should not package platform OpenGL/GLX/EGL drivers.
 - [x] Add a minimal module-only window example.
 - [x] Add GLFW error accessors for backend diagnostics.
 - [x] Add test coverage for exported diagnostic API presence.
-- [ ] Adjust the minimal example to capture GLFW error details before cleanup
+- [x] Adjust the minimal example to capture GLFW error details before cleanup
       when a cleanup call could clear the last error.
-- [ ] Keep README and architecture docs aligned with the final mcpp-index
+- [x] Keep README and architecture docs aligned with the final mcpp-index
       package names.
   - If the runtime provider lands as `compat.glvnd`, use that name.
   - If the package name changes during implementation, update docs only after
     the index PR settles.
-- [ ] Add or update CI build-checks for `examples/minimal_window`.
+- [x] Add or update CI build-checks for `examples/minimal_window`.
   - Runtime execution should stay conditional on a visible display and OpenGL
     runtime.
 
@@ -46,17 +46,17 @@ it should not package platform OpenGL/GLX/EGL drivers.
 
 ## Verification
 
-- [ ] `mcpp build`
-- [ ] `mcpp test`
-- [ ] `cd examples/basic && mcpp run`
-- [ ] `cd examples/minimal_window && mcpp build`
-- [ ] `cd examples/glfw_opengl3 && mcpp build`
+- [x] `mcpp build`
+- [x] `mcpp test`
+- [x] `cd examples/basic && mcpp run`
+- [x] `cd examples/minimal_window && mcpp build`
+- [x] `cd examples/glfw_opengl3 && mcpp build`
 - [ ] On a machine with working display/runtime closure:
       `cd examples/minimal_window && mcpp run`
 
 ## PR / CI / Merge Notes
 
-- [ ] Commit this plan as the first checkpoint on the feature branch.
+- [x] Commit this plan as the first checkpoint on the feature branch.
 - [ ] Keep current implementation checkpoint commits small.
 - [ ] Open a PR with sanitized paths and no local machine details.
 - [ ] Include a test plan that separates build-only CI from display-required
