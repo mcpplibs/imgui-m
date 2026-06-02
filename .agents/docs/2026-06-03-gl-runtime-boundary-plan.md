@@ -1,8 +1,8 @@
 # imgui-m: GL Runtime Boundary Plan
 
-> 状态: active
-> 分支: `codex/gl-runtime-closure-imgui`
-> PR: pending
+> 状态: merged checkpoint; display-required runtime execution remains follow-up
+> 分支: `codex/gl-runtime-closure-imgui` (merged via PR #1)
+> PR: https://github.com/mcpplibs/imgui-m/pull/1
 > Last updated: 2026-06-03
 > 目标: 保持 ImGui module wrapper 简洁,提供可诊断的最小窗口示例,并明确 GL runtime 由 mcpp/mcpp-index 层闭合。
 
@@ -57,12 +57,13 @@ it should not package platform OpenGL/GLX/EGL drivers.
 ## PR / CI / Merge Notes
 
 - [x] Commit this plan as the first checkpoint on the feature branch.
-- [ ] Keep current implementation checkpoint commits small.
-- [ ] Open a PR with sanitized paths and no local machine details.
-- [ ] Include a test plan that separates build-only CI from display-required
+- [x] Keep current implementation checkpoint commits small.
+- [x] Open a PR with sanitized paths and no local machine details.
+- [x] Include a test plan that separates build-only CI from display-required
       runtime checks.
-- [ ] Wait for CI.
-- [ ] Squash merge after required checks pass.
+- [x] Wait for CI.
+- [x] Squash merge after required checks pass.
+  - PR #1 merged at commit `9bf008f343a2afbf6d77f62ea412b5a9850a1005`.
 
 ## Cross-Repository Dependencies
 
