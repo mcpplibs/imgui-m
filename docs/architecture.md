@@ -5,7 +5,12 @@ upstream source ownership in compat packages.
 
 ## Goals
 
+- Offer a three-tier consumer UX:
+  - Tier-0 `imgui.app` — convenience facade owning the full lifecycle.
+  - Tier-1 automatic via the `imgui.backend` contract (`BackendApi` concept).
+  - Tier-2 explicit `imgui.backend.<impl>` module + alias.
 - Let consumers use explicit module imports:
+  - `import imgui.app;` (Tier-0 facade; `export import`s `imgui.core`)
   - `import imgui.core;`
   - `import imgui.backend;` (generic abstraction layer: shared types + contract)
   - `import imgui.backend.platform.glfw;`
@@ -27,6 +32,7 @@ upstream source ownership in compat packages.
 |-- mcpp.toml
 |-- src/
 |   |-- core.cppm
+|   |-- app.cppm                    (Tier-0 imgui.app facade)
 |   `-- backends/
 |       |-- backend.cppm            (abstraction layer: types + BackendApi)
 |       |-- platform_glfw.cppm      (GLFW platform piece)
@@ -39,6 +45,7 @@ upstream source ownership in compat packages.
 |   `-- backend_test.cpp
 `-- examples/
     |-- basic/
+    |-- app_minimal/
     |-- minimal_window/
     `-- glfw_opengl3/
 ```
@@ -52,6 +59,7 @@ backend implementation translation units, and depends on compat packages:
 [build]
 sources = [
   "src/core.cppm",
+  "src/app.cppm",
   "src/backends/backend.cppm",
   "src/backends/platform_glfw.cppm",
   "src/backends/renderer_opengl3.cppm",
@@ -69,6 +77,10 @@ compat.opengl = "2026.05.31"
 The wrapper package does not vendor `third_party/imgui`. Upstream headers,
 core sources, and backend files are read from `compat.imgui`.
 
+The package does not pin a toolchain; mcpp resolves the environment/default
+toolchain. The GL runtime is closed by mcpp/mcpp-index (`compat.glx-runtime`,
+a transitive dependency of `compat.glfw` on Linux), not bundled by this package.
+
 ## Module Wrappers
 
 `src/core.cppm` adapts upstream `imgui.h` internally, then exports selected
@@ -80,6 +92,12 @@ internally and export explicit wrapper functions. The implementation `.cpp`
 files compile upstream backend sources from `compat.imgui/backends` so consumers
 do not need to copy backend sources into their own package.
 
+`src/app.cppm` (`imgui.app`) is the Tier-0 facade. It `export import`s
+`imgui.core` and privately imports `imgui.backend.glfw_opengl3`, exposing
+`ImGui::App::run(...)` as an inline header-style template (the UI callback is a
+template parameter, so there is no `<functional>` dependency). It drives the
+full lifecycle so a consumer supplies only a per-frame UI callback.
+
 ## Validation
 
 Primary proof points:
@@ -88,6 +106,7 @@ Primary proof points:
 mcpp build
 mcpp test
 cd examples/basic && mcpp run
+cd ../app_minimal && mcpp build
 cd ../minimal_window && mcpp build
 cd ../glfw_opengl3 && mcpp build
 ```

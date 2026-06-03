@@ -12,6 +12,7 @@ path = "src/core.cppm"
 [build]
 sources = [
   "src/core.cppm",
+  "src/app.cppm",
   "src/backends/backend.cppm",
   "src/backends/platform_glfw.cppm",
   "src/backends/renderer_opengl3.cppm",

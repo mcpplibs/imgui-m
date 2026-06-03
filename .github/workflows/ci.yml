@@ -61,6 +61,18 @@ jobs:
           xlings update
           xlings install
 
+      # Transition step: a fresh mcpp bootstrap currently defaults to a
+      # musl-static toolchain, which cannot link the host X11/GL runtime on
+      # Linux. The package intentionally does not pin a toolchain in mcpp.toml;
+      # we set an explicit environment default here instead. Remove this once
+      # mcpp's bootstrap default becomes a glibc toolchain.
+      - name: Set default toolchain (env)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          mcpp toolchain install gcc 16.1.0
+          mcpp toolchain default gcc@16.1.0
+
       - name: Show mcpp version
         shell: bash
         run: mcpp --version
