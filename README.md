@@ -7,6 +7,19 @@ module interfaces for the core API plus GLFW/OpenGL3 backend entry points.
 
 ## Modules
 
+Three tiers of consumer UX:
+
+- **Tier-0** `imgui.app` — the convenience facade. Owns the whole window/context
+  lifecycle; you supply only a per-frame UI callback.
+- **Tier-1** automatic via the `imgui.backend` contract — write backend-agnostic
+  code against the `BackendApi` concept and shared types.
+- **Tier-2** explicit `imgui.backend.<impl>` — import a concrete backend module
+  and alias it (`using Backend = ...;`); swap backend with one import + alias.
+
+- `imgui.app`
+  - Tier-0 facade. `ImGui::App::run(opts, ui)` / `ImGui::App::run(ui)` drive the
+    full GLFW/OpenGL3 lifecycle using the default backend. `export import`s
+    `imgui.core` so a consumer gets the `ImGui::*` surface for free.
 - `imgui.core`
   - Core Dear ImGui context, frame, widget, and draw-data APIs.
 - `imgui.backend`
@@ -38,6 +51,12 @@ The root package depends on:
 
 The repository does not vendor Dear ImGui sources. Source and header files come
 from compat packages through mcpp dependency metadata.
+
+### Toolchain and GL runtime
+
+The package does not pin a toolchain; mcpp resolves the environment/default
+toolchain. The GL runtime is closed by mcpp/mcpp-index (`compat.glx-runtime`,
+pulled in transitively by `compat.glfw` on Linux), not bundled by this package.
 
 ## Quick Start
 
@@ -86,7 +105,24 @@ mcpp run
 imgui = "0.0.1"
 ```
 
-Then import the modules you need:
+Then import the modules you need.
+
+Tier-0 (`imgui.app` facade — least code):
+
+```cpp
+import imgui.core;
+import imgui.app;
+
+int main() {
+    return ImGui::App::run([] {
+        ImGui::Begin("hi");
+        ImGui::TextUnformatted("imgui.app facade");
+        ImGui::End();
+    });
+}
+```
+
+Tier-2 (explicit backend module + alias — full control):
 
 ```cpp
 import imgui.core;
@@ -135,6 +171,7 @@ The `0.0.1` release state is verified with mcpp `0.0.44`:
 - `mcpp build`
 - `mcpp test`
 - `cd examples/basic && mcpp run`
+- `cd examples/app_minimal && mcpp build`
 - `cd examples/minimal_window && mcpp build`
 - `cd examples/glfw_opengl3 && mcpp build`
 

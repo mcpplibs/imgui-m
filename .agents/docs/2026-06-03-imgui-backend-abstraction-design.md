@@ -245,17 +245,17 @@ int main() {
 
 ## 8. 跨平台工程化
 
-### 8.1 toolchain
+### 8.1 toolchain(不锁定 / unpinned)
 
-`mcpp.toml` 增加 macOS / Windows toolchain 条目(与 mcpp 支持的工具链命名对齐),
-例如:
+本包**不在任何 `mcpp.toml` 中锁定 toolchain**(没有 `[toolchain]` 段)。
+mcpp 解析环境/默认 toolchain;GL 运行时由 mcpp/mcpp-index 闭合
+(`compat.glx-runtime`,Linux 上由 `compat.glfw` 传递依赖引入),不由本包打包。
 
-```toml
-[toolchain]
-linux   = "llvm@20.1.7"
-macos   = "llvm@20.1.7"   # 或系统 clang;最终以 mcpp-index 可用项为准
-windows = "llvm@20.1.7"
-```
+> 过渡说明:目前全新机器上 mcpp bootstrap 默认是 musl-static 工具链,无法链接
+> 宿主 X11/GL 运行时。CI 在 Linux 上用一个显式环境默认步骤
+> (`mcpp toolchain default gcc@16.1.0`)绕开,而不是在 `mcpp.toml` 里锁定。
+> 待 mcpp bootstrap 默认改为 glibc 工具链后即可移除该步骤。详见
+> `.agents/docs/2026-06-03-consumer-ux-and-lock.md`。
 
 ### 8.2 GL/GLSL 配置
 
@@ -291,7 +291,7 @@ windows = "llvm@20.1.7"
 - `src/core.cppm` → 补 `ImVec4` 等(§7)
 - `tests/backend_test.cpp` → 针对新表面 + `static_assert(BackendApi<...>)`
 - `examples/minimal_window`、`examples/glfw_opengl3` → 统一 `Backend::` 用法 + `RecommendedGlConfig()`
-- `mcpp.toml`(toolchain + sources)、`.github/workflows/ci.yml`(矩阵)
+- `mcpp.toml`(sources;**不含** toolchain)、`.github/workflows/ci.yml`(矩阵 + Linux 环境默认 toolchain 过渡步骤)
 - `docs/architecture.md`、`README.md` 同步
 
 > 旧的 `imgui.backend.glfw` / `imgui.backend.opengl3` 自由函数命名空间被
