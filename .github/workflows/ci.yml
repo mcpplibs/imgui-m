@@ -69,7 +69,9 @@ jobs:
       - name: Set default toolchain (env)
         if: runner.os == 'Linux'
         shell: bash
-        run: mcpp toolchain default gcc@16.1.0
+        run: |
+          mcpp toolchain install gcc 16.1.0
+          mcpp toolchain default gcc@16.1.0
 
       - name: Show mcpp version
         shell: bash
