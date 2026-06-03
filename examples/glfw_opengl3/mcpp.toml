@@ -4,9 +4,5 @@ version     = "0.1.0"
 description = "GLFW and OpenGL3 consumer for imgui backend modules"
 license     = "MIT"
 
-[toolchain]
-default = "llvm@20.1.7"
-linux = "gcc@16.1.0"
-
 [dependencies]
 imgui = { path = "../.." }
