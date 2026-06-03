@@ -15,12 +15,22 @@ export namespace ImGui::Backend {
         using Window = GlfwPlatform::Window;
         using Monitor = GlfwPlatform::Monitor;
 
-        static bool InitGlfw() {
+        // Platform-neutral contract names; the Glfw-flavored spellings below
+        // are kept as aliases for existing consumers.
+        static bool InitPlatform() {
             return GlfwPlatform::InitGlfw();
         }
 
-        static void TerminateGlfw() {
+        static void TerminatePlatform() {
             GlfwPlatform::TerminateGlfw();
+        }
+
+        static bool InitGlfw() {
+            return InitPlatform();
+        }
+
+        static void TerminateGlfw() {
+            TerminatePlatform();
         }
 
         static const char* VersionString() {

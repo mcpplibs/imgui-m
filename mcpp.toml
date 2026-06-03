@@ -17,6 +17,7 @@ sources = [
   "src/backends/platform_glfw.cppm",
   "src/backends/renderer_opengl3.cppm",
   "src/backends/glfw_opengl3.cppm",
+  "src/backends/headless.cppm",
   "src/backends/glfw_impl.cpp",
   "src/backends/opengl3_impl.cpp",
 ]
