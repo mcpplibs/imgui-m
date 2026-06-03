@@ -48,8 +48,10 @@ export namespace ImGui::Backend {
     template <class T>
     concept BackendApi = requires (typename T::Window* window, ImDrawData* drawData, GlConfig config) {
         typename T::Window;
-        T::InitGlfw();
-        T::TerminateGlfw();
+        // Platform-neutral lifecycle names: a backend may be GLFW, SDL, or
+        // fully headless, so the contract must not be GLFW-flavored.
+        T::InitPlatform();
+        T::TerminatePlatform();
         T::CreateWindow(0, 0, "");
         T::DestroyWindow(window);
         T::MakeContextCurrent(window);
