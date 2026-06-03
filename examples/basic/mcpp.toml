@@ -4,8 +4,5 @@ version     = "0.1.0"
 description = "Headless consumer for the imgui.core module"
 license     = "MIT"
 
-[toolchain]
-linux = "llvm@20.1.7"
-
 [dependencies]
 imgui = { path = "../.." }
