@@ -11,6 +11,7 @@ path = "src/core.cppm"
 
 [toolchain]
 default = "llvm@20.1.7"
+linux = "gcc@16.1.0"
 
 [build]
 sources = [
