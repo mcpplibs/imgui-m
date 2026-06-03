@@ -9,13 +9,24 @@ module interfaces for the core API plus GLFW/OpenGL3 backend entry points.
 
 - `imgui.core`
   - Core Dear ImGui context, frame, widget, and draw-data APIs.
-- `imgui.backend.glfw`
-  - GLFW platform backend plus a small GLFW window/context helper surface.
-- `imgui.backend.opengl3`
-  - OpenGL3 renderer backend.
+- `imgui.backend`
+  - Generic backend abstraction layer: shared value types (`GlConfig`, `Error`,
+    `FbSize`), `RecommendedGlConfig()` cross-platform defaults, and the
+    compile-time `BackendApi` contract every backend satisfies. No platform code.
+- `imgui.backend.platform.glfw`
+  - GLFW platform piece: window/event management + `ImGui_ImplGlfw_*` binding.
+- `imgui.backend.renderer.opengl3`
+  - OpenGL3 renderer piece: GL framebuffer ops + `ImGui_ImplOpenGL3_*` binding.
 - `imgui.backend.glfw_opengl3`
-  - Convenience module that re-exports core, GLFW, and OpenGL3 backend modules
-    and provides combined lifecycle helpers.
+  - Concrete backend: assembles the GLFW platform and OpenGL3 renderer pieces
+    into a single `ImGui::Backend::GlfwOpenGL3` type satisfying `BackendApi`.
+    Re-exports `imgui.backend` (shared types) but **not** `imgui.core`.
+
+Backends expose one `Backend` type with a uniform static API, so swapping
+backend is just a different `import` plus a one-line `using Backend = ...;`
+alias — the rest of the consumer code is identical. Cross-platform GL/GLSL
+configuration (incl. macOS forward-compat) is handled by `RecommendedGlConfig()`,
+which `CreateWindow`/`Init` use by default.
 
 ## Dependencies
 
@@ -80,11 +91,21 @@ Then import the modules you need:
 ```cpp
 import imgui.core;
 import imgui.backend.glfw_opengl3;
+using Backend = ImGui::Backend::GlfwOpenGL3;   // swap import + alias to switch backends
 
 int main() {
+    Backend::InitGlfw();
+    auto* window = Backend::CreateWindow(960, 540, "demo");   // cross-platform GL hints
+    Backend::MakeContextCurrent(window);
+
     ImGuiContext* context = ImGui::CreateContext();
     ImGui::SetCurrentContext(context);
+    Backend::Init(window);                                    // RecommendedGlConfig() default
+    // ... frame loop: Backend::NewFrame / ImGui::* / Backend::RenderDrawData ...
+    Backend::Shutdown();
     ImGui::DestroyContext(context);
+    Backend::DestroyWindow(window);
+    Backend::TerminateGlfw();
 }
 ```
 
@@ -93,13 +114,19 @@ int main() {
 `src/core.cppm` wraps `imgui.h` through a global module fragment and exports a
 tested core API surface:
 
-- Types: `ImGuiContext`, `ImFontAtlas`, `ImGuiIO`, `ImDrawData`, `ImVec2`.
+- Types: `ImGuiContext`, `ImFontAtlas`, `ImGuiIO`, `ImDrawData`, `ImVec2`,
+  `ImVec4`.
 - Functions: context lifecycle, `GetIO`, `NewFrame`, `Begin`, `Button`,
   `TextUnformatted`, `End`, `Render`, and `GetDrawData`.
 
+`imgui.core` exports a curated core subset; for rarely used APIs not yet
+exported, a consumer translation unit can still `#include <imgui.h>` directly
+alongside the module imports.
+
 Backend modules adapt the official Dear ImGui backend headers internally and
-export explicit wrapper functions. Consumer code should only need module
-imports for the surfaces exposed by this package.
+expose a single `Backend` type per backend (uniform static API constrained by
+`ImGui::Backend::BackendApi`). Consumer code only needs module imports for the
+surfaces exposed by this package.
 
 ## Verification
 

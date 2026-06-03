@@ -1,45 +1,57 @@
 #include <gtest/gtest.h>
 
 import imgui.core;
-import imgui.backend.glfw;
-import imgui.backend.opengl3;
+import imgui.backend;
+import imgui.backend.platform.glfw;
+import imgui.backend.renderer.opengl3;
 import imgui.backend.glfw_opengl3;
 
-TEST(ImGuiGlfwBackendModuleTest, ExposesPlatformApi) {
-    ImGui::Backend::Glfw::Window* window = nullptr;
-    ImGui::Backend::Glfw::Monitor* monitor = nullptr;
+namespace Backend = ImGui::Backend;
 
-    auto initForOpenGL = &ImGui::Backend::Glfw::InitForOpenGL;
-    auto shutdown = &ImGui::Backend::Glfw::Shutdown;
-    auto newFrame = &ImGui::Backend::Glfw::NewFrame;
-    auto installCallbacks = &ImGui::Backend::Glfw::InstallCallbacks;
-    auto restoreCallbacks = &ImGui::Backend::Glfw::RestoreCallbacks;
-    auto getContentScaleForWindow = &ImGui::Backend::Glfw::GetContentScaleForWindow;
-    auto getContentScaleForMonitor = &ImGui::Backend::Glfw::GetContentScaleForMonitor;
-    auto getFramebufferSize = &ImGui::Backend::Glfw::GetFramebufferSize;
-    auto getError = &ImGui::Backend::Glfw::GetError;
+// The contract is satisfied at compile time. This also documents that any new
+// backend must pass the same assertion.
+static_assert(Backend::BackendApi<Backend::GlfwOpenGL3>);
+
+TEST(ImGuiBackendContractTest, ProvidesCrossPlatformDefaults) {
+    Backend::GlConfig config = Backend::RecommendedGlConfig();
+    EXPECT_GE(config.major, 3);
+    EXPECT_TRUE(config.coreProfile);
+    EXPECT_NE(config.glsl, nullptr);
+#if defined(__APPLE__)
+    EXPECT_TRUE(config.forwardCompat);
+    EXPECT_GE(config.minor, 2);
+#endif
+}
+
+TEST(ImGuiGlfwPlatformModuleTest, ExposesPlatformApi) {
+    Backend::GlfwPlatform::Window* window = nullptr;
+    Backend::GlfwPlatform::Monitor* monitor = nullptr;
+
+    auto initForOpenGL = &Backend::GlfwPlatform::InitForOpenGL;
+    auto shutdown = &Backend::GlfwPlatform::Shutdown;
+    auto newFrame = &Backend::GlfwPlatform::NewFrame;
+    auto framebufferSize = &Backend::GlfwPlatform::FramebufferSize;
+    auto applyGlConfig = &Backend::GlfwPlatform::ApplyGlConfig;
+    auto lastError = &Backend::GlfwPlatform::LastError;
 
     EXPECT_EQ(window, nullptr);
     EXPECT_EQ(monitor, nullptr);
     EXPECT_NE(initForOpenGL, nullptr);
     EXPECT_NE(shutdown, nullptr);
     EXPECT_NE(newFrame, nullptr);
-    EXPECT_NE(installCallbacks, nullptr);
-    EXPECT_NE(restoreCallbacks, nullptr);
-    EXPECT_NE(getContentScaleForWindow, nullptr);
-    EXPECT_NE(getContentScaleForMonitor, nullptr);
-    EXPECT_NE(getFramebufferSize, nullptr);
-    EXPECT_NE(getError, nullptr);
+    EXPECT_NE(framebufferSize, nullptr);
+    EXPECT_NE(applyGlConfig, nullptr);
+    EXPECT_NE(lastError, nullptr);
 }
 
-TEST(ImGuiOpenGL3BackendModuleTest, ExposesRendererApi) {
-    auto init = &ImGui::Backend::OpenGL3::Init;
-    auto shutdown = &ImGui::Backend::OpenGL3::Shutdown;
-    auto newFrame = &ImGui::Backend::OpenGL3::NewFrame;
-    auto viewport = &ImGui::Backend::OpenGL3::Viewport;
-    auto clearColor = &ImGui::Backend::OpenGL3::ClearColor;
-    auto clearColorBuffer = &ImGui::Backend::OpenGL3::ClearColorBuffer;
-    auto renderDrawData = &ImGui::Backend::OpenGL3::RenderDrawData;
+TEST(ImGuiOpenGL3RendererModuleTest, ExposesRendererApi) {
+    auto init = &Backend::OpenGL3Renderer::Init;
+    auto shutdown = &Backend::OpenGL3Renderer::Shutdown;
+    auto newFrame = &Backend::OpenGL3Renderer::NewFrame;
+    auto viewport = &Backend::OpenGL3Renderer::Viewport;
+    auto clearColor = &Backend::OpenGL3Renderer::ClearColor;
+    auto clearColorBuffer = &Backend::OpenGL3Renderer::ClearColorBuffer;
+    auto renderDrawData = &Backend::OpenGL3Renderer::RenderDrawData;
 
     EXPECT_NE(init, nullptr);
     EXPECT_NE(shutdown, nullptr);
@@ -50,32 +62,29 @@ TEST(ImGuiOpenGL3BackendModuleTest, ExposesRendererApi) {
     EXPECT_NE(renderDrawData, nullptr);
 }
 
-TEST(ImGuiGlfwOpenGL3BackendModuleTest, ExposesCombinedApi) {
-    auto initGlfw = &ImGui::Backend::GlfwOpenGL3::InitGlfw;
-    auto terminateGlfw = &ImGui::Backend::GlfwOpenGL3::TerminateGlfw;
-    auto configureOpenGL = &ImGui::Backend::GlfwOpenGL3::ConfigureOpenGL;
-    auto setNextWindowVisible = &ImGui::Backend::GlfwOpenGL3::SetNextWindowVisible;
-    auto createWindow = &ImGui::Backend::GlfwOpenGL3::CreateWindow;
-    auto destroyWindow = &ImGui::Backend::GlfwOpenGL3::DestroyWindow;
-    auto makeContextCurrent = &ImGui::Backend::GlfwOpenGL3::MakeContextCurrent;
-    auto getFramebufferSize = &ImGui::Backend::GlfwOpenGL3::GetFramebufferSize;
-    auto init = &ImGui::Backend::GlfwOpenGL3::Init;
-    auto shutdown = &ImGui::Backend::GlfwOpenGL3::Shutdown;
-    auto newFrame = &ImGui::Backend::GlfwOpenGL3::NewFrame;
-    auto viewport = &ImGui::Backend::GlfwOpenGL3::Viewport;
-    auto clearColor = &ImGui::Backend::GlfwOpenGL3::ClearColor;
-    auto clearColorBuffer = &ImGui::Backend::GlfwOpenGL3::ClearColorBuffer;
-    auto renderDrawData = &ImGui::Backend::GlfwOpenGL3::RenderDrawData;
-    auto getError = &ImGui::Backend::GlfwOpenGL3::GetError;
+TEST(ImGuiGlfwOpenGL3BackendModuleTest, ExposesUnifiedApi) {
+    auto initGlfw = &Backend::GlfwOpenGL3::InitGlfw;
+    auto terminateGlfw = &Backend::GlfwOpenGL3::TerminateGlfw;
+    auto createWindow = &Backend::GlfwOpenGL3::CreateWindow;
+    auto destroyWindow = &Backend::GlfwOpenGL3::DestroyWindow;
+    auto makeContextCurrent = &Backend::GlfwOpenGL3::MakeContextCurrent;
+    auto framebufferSize = &Backend::GlfwOpenGL3::FramebufferSize;
+    auto init = &Backend::GlfwOpenGL3::Init;
+    auto shutdown = &Backend::GlfwOpenGL3::Shutdown;
+    auto newFrame = &Backend::GlfwOpenGL3::NewFrame;
+    auto viewport = &Backend::GlfwOpenGL3::Viewport;
+    auto clearColor = &Backend::GlfwOpenGL3::ClearColor;
+    auto clearColorBuffer = &Backend::GlfwOpenGL3::ClearColorBuffer;
+    auto renderDrawData = &Backend::GlfwOpenGL3::RenderDrawData;
+    auto swapBuffers = &Backend::GlfwOpenGL3::SwapBuffers;
+    auto lastError = &Backend::GlfwOpenGL3::LastError;
 
     EXPECT_NE(initGlfw, nullptr);
     EXPECT_NE(terminateGlfw, nullptr);
-    EXPECT_NE(configureOpenGL, nullptr);
-    EXPECT_NE(setNextWindowVisible, nullptr);
     EXPECT_NE(createWindow, nullptr);
     EXPECT_NE(destroyWindow, nullptr);
     EXPECT_NE(makeContextCurrent, nullptr);
-    EXPECT_NE(getFramebufferSize, nullptr);
+    EXPECT_NE(framebufferSize, nullptr);
     EXPECT_NE(init, nullptr);
     EXPECT_NE(shutdown, nullptr);
     EXPECT_NE(newFrame, nullptr);
@@ -83,5 +92,6 @@ TEST(ImGuiGlfwOpenGL3BackendModuleTest, ExposesCombinedApi) {
     EXPECT_NE(clearColor, nullptr);
     EXPECT_NE(clearColorBuffer, nullptr);
     EXPECT_NE(renderDrawData, nullptr);
-    EXPECT_NE(getError, nullptr);
+    EXPECT_NE(swapBuffers, nullptr);
+    EXPECT_NE(lastError, nullptr);
 }

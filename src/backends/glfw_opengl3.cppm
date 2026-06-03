@@ -1,145 +1,144 @@
 export module imgui.backend.glfw_opengl3;
 
-export import imgui.core;
-export import imgui.backend.glfw;
-export import imgui.backend.opengl3;
+import imgui.core;
+export import imgui.backend; // shared types (GlConfig/Error/FbSize) are part of the backend surface
+import imgui.backend.platform.glfw;
+import imgui.backend.renderer.opengl3;
 
-export namespace ImGui::Backend::GlfwOpenGL3 {
-    using Monitor = Glfw::Monitor;
-    using Window = Glfw::Window;
+// Concrete backend: assembles the GLFW platform piece and the OpenGL3 renderer
+// piece into a single Backend type that satisfies BackendApi. Consumer code is
+// identical across backends; swapping backend is a different import + alias.
+//
+// This module imports imgui.core for signatures but does NOT re-export it.
+export namespace ImGui::Backend {
+    struct GlfwOpenGL3 {
+        using Window = GlfwPlatform::Window;
+        using Monitor = GlfwPlatform::Monitor;
 
-    bool InitGlfw() {
-        return Glfw::InitGlfw();
-    }
-
-    void TerminateGlfw() {
-        Glfw::TerminateGlfw();
-    }
-
-    const char* GlfwVersionString() {
-        return Glfw::GlfwVersionString();
-    }
-
-    int GetError(const char** description) {
-        return Glfw::GetError(description);
-    }
-
-    void DefaultWindowHints() {
-        Glfw::DefaultWindowHints();
-    }
-
-    void ConfigureOpenGL(int major, int minor, bool coreProfile = true, bool forwardCompat = false) {
-        Glfw::ConfigureOpenGL(major, minor, coreProfile, forwardCompat);
-    }
-
-    void SetNextWindowVisible(bool visible) {
-        Glfw::SetNextWindowVisible(visible);
-    }
-
-    Window* CreateWindow(
-        int width,
-        int height,
-        const char* title,
-        Monitor* monitor = nullptr,
-        Window* share = nullptr
-    ) {
-        return Glfw::CreateWindow(width, height, title, monitor, share);
-    }
-
-    void DestroyWindow(Window* window) {
-        Glfw::DestroyWindow(window);
-    }
-
-    void MakeContextCurrent(Window* window) {
-        Glfw::MakeContextCurrent(window);
-    }
-
-    void GetFramebufferSize(Window* window, int* width, int* height) {
-        Glfw::GetFramebufferSize(window, width, height);
-    }
-
-    void SwapInterval(int interval) {
-        Glfw::SwapInterval(interval);
-    }
-
-    bool WindowShouldClose(Window* window) {
-        return Glfw::WindowShouldClose(window);
-    }
-
-    void SetWindowShouldClose(Window* window, bool value) {
-        Glfw::SetWindowShouldClose(window, value);
-    }
-
-    void PollEvents() {
-        Glfw::PollEvents();
-    }
-
-    void SwapBuffers(Window* window) {
-        Glfw::SwapBuffers(window);
-    }
-
-    bool InitForOpenGL(Window* window, bool installCallbacks = true) {
-        return Glfw::InitForOpenGL(window, installCallbacks);
-    }
-
-    bool InitRenderer(const char* glslVersion = nullptr) {
-        return OpenGL3::Init(glslVersion);
-    }
-
-    bool Init(Window* window, const char* glslVersion = nullptr, bool installCallbacks = true) {
-        if (!InitForOpenGL(window, installCallbacks)) {
-            return false;
+        static bool InitGlfw() {
+            return GlfwPlatform::InitGlfw();
         }
-        if (!InitRenderer(glslVersion)) {
-            Glfw::Shutdown();
-            return false;
+
+        static void TerminateGlfw() {
+            GlfwPlatform::TerminateGlfw();
         }
-        return true;
-    }
 
-    void ShutdownRenderer() {
-        OpenGL3::Shutdown();
-    }
+        static const char* VersionString() {
+            return GlfwPlatform::VersionString();
+        }
 
-    void ShutdownPlatform() {
-        Glfw::Shutdown();
-    }
+        static Error LastError() {
+            return GlfwPlatform::LastError();
+        }
 
-    void Shutdown() {
-        ShutdownRenderer();
-        ShutdownPlatform();
-    }
+        // Cross-platform window creation: applies default hints + GlConfig
+        // (incl. macOS forward-compat) before creating the window.
+        static Window* CreateWindow(
+            int width,
+            int height,
+            const char* title,
+            GlConfig config = RecommendedGlConfig()
+        ) {
+            GlfwPlatform::DefaultWindowHints();
+            GlfwPlatform::ApplyGlConfig(config);
+            return GlfwPlatform::CreateWindow(width, height, title);
+        }
 
-    void NewFrame() {
-        OpenGL3::NewFrame();
-        Glfw::NewFrame();
-    }
+        static void DestroyWindow(Window* window) {
+            GlfwPlatform::DestroyWindow(window);
+        }
 
-    void Viewport(int x, int y, int width, int height) {
-        OpenGL3::Viewport(x, y, width, height);
-    }
+        static void MakeContextCurrent(Window* window) {
+            GlfwPlatform::MakeContextCurrent(window);
+        }
 
-    void ClearColor(float red, float green, float blue, float alpha) {
-        OpenGL3::ClearColor(red, green, blue, alpha);
-    }
+        static void SwapInterval(int interval) {
+            GlfwPlatform::SwapInterval(interval);
+        }
 
-    void ClearColorBuffer() {
-        OpenGL3::ClearColorBuffer();
-    }
+        static FbSize FramebufferSize(Window* window) {
+            return GlfwPlatform::FramebufferSize(window);
+        }
 
-    void RenderDrawData(ImDrawData* drawData) {
-        OpenGL3::RenderDrawData(drawData);
-    }
+        static bool WindowShouldClose(Window* window) {
+            return GlfwPlatform::WindowShouldClose(window);
+        }
 
-    void InstallCallbacks(Window* window) {
-        Glfw::InstallCallbacks(window);
-    }
+        static void SetWindowShouldClose(Window* window, bool value) {
+            GlfwPlatform::SetWindowShouldClose(window, value);
+        }
 
-    void RestoreCallbacks(Window* window) {
-        Glfw::RestoreCallbacks(window);
-    }
+        static void PollEvents() {
+            GlfwPlatform::PollEvents();
+        }
 
-    void SetCallbacksChainForAllWindows(bool chainForAllWindows) {
-        Glfw::SetCallbacksChainForAllWindows(chainForAllWindows);
-    }
+        static void SwapBuffers(Window* window) {
+            GlfwPlatform::SwapBuffers(window);
+        }
+
+        // Initialize ImGui platform + renderer bindings. glsl is taken from the
+        // same config used for window creation (default RecommendedGlConfig()).
+        static bool Init(
+            Window* window,
+            GlConfig config = RecommendedGlConfig(),
+            bool installCallbacks = true
+        ) {
+            if (!GlfwPlatform::InitForOpenGL(window, installCallbacks)) {
+                return false;
+            }
+            if (!OpenGL3Renderer::Init(config.glsl)) {
+                GlfwPlatform::Shutdown();
+                return false;
+            }
+            return true;
+        }
+
+        static void NewFrame() {
+            OpenGL3Renderer::NewFrame();
+            GlfwPlatform::NewFrame();
+        }
+
+        static void Viewport(int x, int y, int width, int height) {
+            OpenGL3Renderer::Viewport(x, y, width, height);
+        }
+
+        static void ClearColor(float red, float green, float blue, float alpha) {
+            OpenGL3Renderer::ClearColor(red, green, blue, alpha);
+        }
+
+        static void ClearColorBuffer() {
+            OpenGL3Renderer::ClearColorBuffer();
+        }
+
+        static void RenderDrawData(ImDrawData* drawData) {
+            OpenGL3Renderer::RenderDrawData(drawData);
+        }
+
+        static void ShutdownRenderer() {
+            OpenGL3Renderer::Shutdown();
+        }
+
+        static void ShutdownPlatform() {
+            GlfwPlatform::Shutdown();
+        }
+
+        static void Shutdown() {
+            ShutdownRenderer();
+            ShutdownPlatform();
+        }
+
+        static void InstallCallbacks(Window* window) {
+            GlfwPlatform::InstallCallbacks(window);
+        }
+
+        static void RestoreCallbacks(Window* window) {
+            GlfwPlatform::RestoreCallbacks(window);
+        }
+
+        static void SetCallbacksChainForAllWindows(bool chainForAllWindows) {
+            GlfwPlatform::SetCallbacksChainForAllWindows(chainForAllWindows);
+        }
+    };
+
+    static_assert(BackendApi<GlfwOpenGL3>, "GlfwOpenGL3 must satisfy the backend contract");
 }

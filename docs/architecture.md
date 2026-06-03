@@ -7,9 +7,13 @@ upstream source ownership in compat packages.
 
 - Let consumers use explicit module imports:
   - `import imgui.core;`
-  - `import imgui.backend.glfw;`
-  - `import imgui.backend.opengl3;`
+  - `import imgui.backend;` (generic abstraction layer: shared types + contract)
+  - `import imgui.backend.platform.glfw;`
+  - `import imgui.backend.renderer.opengl3;`
   - `import imgui.backend.glfw_opengl3;`
+- Provide a uniform, compile-time-constrained backend surface so swapping a
+  backend is just a different import plus a one-line alias, with cross-platform
+  GL/GLSL defaults handled by the abstraction layer.
 - Keep the package source small: module wrappers and backend implementation
   translation units only.
 - Use `compat.imgui`, `compat.glfw`, and `compat.opengl` as the source and
@@ -24,9 +28,10 @@ upstream source ownership in compat packages.
 |-- src/
 |   |-- core.cppm
 |   `-- backends/
-|       |-- glfw.cppm
-|       |-- opengl3.cppm
-|       |-- glfw_opengl3.cppm
+|       |-- backend.cppm            (abstraction layer: types + BackendApi)
+|       |-- platform_glfw.cppm      (GLFW platform piece)
+|       |-- renderer_opengl3.cppm   (OpenGL3 renderer piece)
+|       |-- glfw_opengl3.cppm       (concrete Backend assembly)
 |       |-- glfw_impl.cpp
 |       `-- opengl3_impl.cpp
 |-- tests/
@@ -47,8 +52,9 @@ backend implementation translation units, and depends on compat packages:
 [build]
 sources = [
   "src/core.cppm",
-  "src/backends/glfw.cppm",
-  "src/backends/opengl3.cppm",
+  "src/backends/backend.cppm",
+  "src/backends/platform_glfw.cppm",
+  "src/backends/renderer_opengl3.cppm",
   "src/backends/glfw_opengl3.cppm",
   "src/backends/glfw_impl.cpp",
   "src/backends/opengl3_impl.cpp",

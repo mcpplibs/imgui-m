@@ -9,6 +9,7 @@ export using ImGuiContext = ::ImGuiContext;
 export using ImGuiIO = ::ImGuiIO;
 export using ImFontAtlas = ::ImFontAtlas;
 export using ImVec2 = ::ImVec2;
+export using ImVec4 = ::ImVec4;
 
 export namespace ImGui {
     using ::ImGui::Begin;

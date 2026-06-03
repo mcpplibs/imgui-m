@@ -1,19 +1,12 @@
 import std;
+import imgui.core;
 import imgui.backend.glfw_opengl3;
 
+// Swap the import above and this alias to switch backends; the rest is identical.
+using Backend = ImGui::Backend::GlfwOpenGL3;
+
 namespace {
-    struct GlfwError {
-        int code = 0;
-        const char* description = nullptr;
-    };
-
-    GlfwError captureError() {
-        const char* description = nullptr;
-        const int errorCode = ImGui::Backend::GlfwOpenGL3::GetError(&description);
-        return GlfwError{errorCode, description};
-    }
-
-    int fail(const char* step, int exitCode, GlfwError error) {
+    int fail(const char* step, int exitCode, ImGui::Backend::Error error) {
         std::println(
             "failed at {}: GLFW error {} ({})",
             step,
@@ -25,18 +18,13 @@ namespace {
 }
 
 int main() {
-    namespace Backend = ImGui::Backend::GlfwOpenGL3;
-
     if (!Backend::InitGlfw()) {
-        return fail("glfwInit", 1, captureError());
+        return fail("glfwInit", 1, Backend::LastError());
     }
-
-    Backend::DefaultWindowHints();
-    Backend::ConfigureOpenGL(3, 3, true, false);
 
     auto* window = Backend::CreateWindow(640, 360, "mcpp imgui minimal window");
     if (window == nullptr) {
-        const auto error = captureError();
+        const auto error = Backend::LastError();
         Backend::TerminateGlfw();
         return fail("glfwCreateWindow", 2, error);
     }
@@ -48,7 +36,7 @@ int main() {
     ImGui::SetCurrentContext(context);
 
     if (!Backend::Init(window)) {
-        const auto error = captureError();
+        const auto error = Backend::LastError();
         ImGui::DestroyContext(context);
         Backend::DestroyWindow(window);
         Backend::TerminateGlfw();
@@ -65,10 +53,8 @@ int main() {
         ImGui::End();
         ImGui::Render();
 
-        int framebufferWidth = 0;
-        int framebufferHeight = 0;
-        Backend::GetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-        Backend::Viewport(0, 0, framebufferWidth, framebufferHeight);
+        const auto framebuffer = Backend::FramebufferSize(window);
+        Backend::Viewport(0, 0, framebuffer.width, framebuffer.height);
         Backend::ClearColor(0.08f, 0.09f, 0.10f, 1.0f);
         Backend::ClearColorBuffer();
         Backend::RenderDrawData(ImGui::GetDrawData());

@@ -2,71 +2,65 @@ import std;
 import imgui.core;
 import imgui.backend.glfw_opengl3;
 
+// Swap the import above and this alias to switch backends; the rest is identical.
+using Backend = ImGui::Backend::GlfwOpenGL3;
+
 int main() {
-    if (!ImGui::Backend::GlfwOpenGL3::InitGlfw()) {
+    if (!Backend::InitGlfw()) {
         std::println("failed to initialize GLFW");
         return 1;
     }
 
-    ImGui::Backend::GlfwOpenGL3::DefaultWindowHints();
-    ImGui::Backend::GlfwOpenGL3::ConfigureOpenGL(3, 3, true, false);
-
-    auto* window = ImGui::Backend::GlfwOpenGL3::CreateWindow(
-        960,
-        540,
-        "mcpp imgui glfw/opengl3 demo"
-    );
+    auto* window = Backend::CreateWindow(960, 540, "mcpp imgui glfw/opengl3 demo");
     if (window == nullptr) {
         std::println("failed to create GLFW window");
-        ImGui::Backend::GlfwOpenGL3::TerminateGlfw();
+        Backend::TerminateGlfw();
         return 1;
     }
 
-    ImGui::Backend::GlfwOpenGL3::MakeContextCurrent(window);
-    ImGui::Backend::GlfwOpenGL3::SwapInterval(1);
+    Backend::MakeContextCurrent(window);
+    Backend::SwapInterval(1);
 
     ImGuiContext* context = ImGui::CreateContext();
     ImGui::SetCurrentContext(context);
 
-    if (!ImGui::Backend::GlfwOpenGL3::Init(window)) {
+    if (!Backend::Init(window)) {
         std::println("failed to initialize ImGui GLFW/OpenGL3 backends");
         ImGui::DestroyContext(context);
-        ImGui::Backend::GlfwOpenGL3::DestroyWindow(window);
-        ImGui::Backend::GlfwOpenGL3::TerminateGlfw();
+        Backend::DestroyWindow(window);
+        Backend::TerminateGlfw();
         return 1;
     }
 
-    while (!ImGui::Backend::GlfwOpenGL3::WindowShouldClose(window)) {
-        ImGui::Backend::GlfwOpenGL3::PollEvents();
-        ImGui::Backend::GlfwOpenGL3::NewFrame();
+    while (!Backend::WindowShouldClose(window)) {
+        Backend::PollEvents();
+        Backend::NewFrame();
 
         ImGui::NewFrame();
         bool open = true;
         ImGui::Begin("mcpp imgui", &open);
         ImGui::TextUnformatted("Hello from import imgui.backend.glfw_opengl3");
         if (ImGui::Button("Close")) {
-            ImGui::Backend::GlfwOpenGL3::SetWindowShouldClose(window, true);
+            Backend::SetWindowShouldClose(window, true);
         }
         ImGui::End();
         ImGui::Render();
 
-        int framebufferWidth = 0;
-        int framebufferHeight = 0;
-        ImGui::Backend::GlfwOpenGL3::GetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-        ImGui::Backend::GlfwOpenGL3::Viewport(0, 0, framebufferWidth, framebufferHeight);
-        ImGui::Backend::GlfwOpenGL3::ClearColor(0.08f, 0.09f, 0.10f, 1.0f);
-        ImGui::Backend::GlfwOpenGL3::ClearColorBuffer();
-        ImGui::Backend::GlfwOpenGL3::RenderDrawData(ImGui::GetDrawData());
-        ImGui::Backend::GlfwOpenGL3::SwapBuffers(window);
+        const auto framebuffer = Backend::FramebufferSize(window);
+        Backend::Viewport(0, 0, framebuffer.width, framebuffer.height);
+        Backend::ClearColor(0.08f, 0.09f, 0.10f, 1.0f);
+        Backend::ClearColorBuffer();
+        Backend::RenderDrawData(ImGui::GetDrawData());
+        Backend::SwapBuffers(window);
 
         if (!open) {
-            ImGui::Backend::GlfwOpenGL3::SetWindowShouldClose(window, true);
+            Backend::SetWindowShouldClose(window, true);
         }
     }
 
-    ImGui::Backend::GlfwOpenGL3::Shutdown();
+    Backend::Shutdown();
     ImGui::DestroyContext(context);
-    ImGui::Backend::GlfwOpenGL3::DestroyWindow(window);
-    ImGui::Backend::GlfwOpenGL3::TerminateGlfw();
+    Backend::DestroyWindow(window);
+    Backend::TerminateGlfw();
     return 0;
 }

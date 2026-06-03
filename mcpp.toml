@@ -10,13 +10,16 @@ repo        = "https://github.com/mcpplibs/imgui-m"
 path = "src/core.cppm"
 
 [toolchain]
-linux = "llvm@20.1.7"
+linux   = "llvm@20.1.7"
+macos   = "llvm@20.1.7"
+windows = "llvm@20.1.7"
 
 [build]
 sources = [
   "src/core.cppm",
-  "src/backends/glfw.cppm",
-  "src/backends/opengl3.cppm",
+  "src/backends/backend.cppm",
+  "src/backends/platform_glfw.cppm",
+  "src/backends/renderer_opengl3.cppm",
   "src/backends/glfw_opengl3.cppm",
   "src/backends/glfw_impl.cpp",
   "src/backends/opengl3_impl.cpp",
