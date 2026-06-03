@@ -1,0 +1,8 @@
+[package]
+name        = "imgui-app-minimal"
+version     = "0.1.0"
+description = "Tier-0 imgui.app facade consumer"
+license     = "MIT"
+
+[dependencies]
+imgui = { path = "../.." }
