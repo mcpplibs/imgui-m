@@ -65,6 +65,12 @@ int main() {
         ImGui::End();
         ImGui::Render();
 
+        int framebufferWidth = 0;
+        int framebufferHeight = 0;
+        Backend::GetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+        Backend::Viewport(0, 0, framebufferWidth, framebufferHeight);
+        Backend::ClearColor(0.08f, 0.09f, 0.10f, 1.0f);
+        Backend::ClearColorBuffer();
         Backend::RenderDrawData(ImGui::GetDrawData());
         Backend::SwapBuffers(window);
     }

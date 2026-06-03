@@ -63,6 +63,10 @@ export namespace ImGui::Backend::Glfw {
         glfwMakeContextCurrent(window);
     }
 
+    void GetFramebufferSize(Window* window, int* width, int* height) {
+        glfwGetFramebufferSize(window, width, height);
+    }
+
     void SwapInterval(int interval) {
         glfwSwapInterval(interval);
     }

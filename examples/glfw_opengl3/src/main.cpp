@@ -50,6 +50,12 @@ int main() {
         ImGui::End();
         ImGui::Render();
 
+        int framebufferWidth = 0;
+        int framebufferHeight = 0;
+        ImGui::Backend::GlfwOpenGL3::GetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+        ImGui::Backend::GlfwOpenGL3::Viewport(0, 0, framebufferWidth, framebufferHeight);
+        ImGui::Backend::GlfwOpenGL3::ClearColor(0.08f, 0.09f, 0.10f, 1.0f);
+        ImGui::Backend::GlfwOpenGL3::ClearColorBuffer();
         ImGui::Backend::GlfwOpenGL3::RenderDrawData(ImGui::GetDrawData());
         ImGui::Backend::GlfwOpenGL3::SwapBuffers(window);
 

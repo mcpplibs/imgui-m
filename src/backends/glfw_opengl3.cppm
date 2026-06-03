@@ -54,6 +54,10 @@ export namespace ImGui::Backend::GlfwOpenGL3 {
         Glfw::MakeContextCurrent(window);
     }
 
+    void GetFramebufferSize(Window* window, int* width, int* height) {
+        Glfw::GetFramebufferSize(window, width, height);
+    }
+
     void SwapInterval(int interval) {
         Glfw::SwapInterval(interval);
     }
@@ -109,6 +113,18 @@ export namespace ImGui::Backend::GlfwOpenGL3 {
     void NewFrame() {
         OpenGL3::NewFrame();
         Glfw::NewFrame();
+    }
+
+    void Viewport(int x, int y, int width, int height) {
+        OpenGL3::Viewport(x, y, width, height);
+    }
+
+    void ClearColor(float red, float green, float blue, float alpha) {
+        OpenGL3::ClearColor(red, green, blue, alpha);
+    }
+
+    void ClearColorBuffer() {
+        OpenGL3::ClearColorBuffer();
     }
 
     void RenderDrawData(ImDrawData* drawData) {
