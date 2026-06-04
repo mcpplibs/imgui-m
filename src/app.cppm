@@ -53,6 +53,10 @@ export namespace ImGui::App {
 
         ImGuiContext* context = ImGui::CreateContext();
         ImGui::SetCurrentContext(context);
+#ifdef MCPP_FEATURE_DOCKING
+        // `docking` feature: enable dockable windows out of the box.
+        ImGui::GetIO().ConfigFlags |= ImGui::ConfigFlags_DockingEnable;
+#endif
 
         if (!Backend::Init(window)) {
             const auto error = Backend::LastError();

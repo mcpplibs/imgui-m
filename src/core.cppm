@@ -26,3 +26,25 @@ export namespace ImGui {
     using ::ImGui::SetCurrentContext;
     using ::ImGui::TextUnformatted;
 }
+
+// Docking surface — gated by the `docking` feature
+// (`imgui = { ..., features = ["docking"] }`). Requires the upstream docking
+// sources (compat.imgui 1.92.8-docking); with the feature off, the docking
+// sources behave exactly like mainline.
+#ifdef MCPP_FEATURE_DOCKING
+// (ImGuiID / ImGuiDockNodeFlags are plain-integer typedefs; GMF typedefs
+//  cannot be re-aliased under the same global name in a module. Consumers
+//  take DockSpace* return values with `auto`.)
+export namespace ImGui {
+    using ::ImGui::DockSpace;
+    using ::ImGui::DockSpaceOverViewport;
+    using ::ImGui::SetNextWindowDockID;
+    using ::ImGui::GetWindowDockID;
+    using ::ImGui::IsWindowDocked;
+
+    // Unscoped global enumerators, re-exported as namespaced constants for
+    // module consumers.
+    inline constexpr int ConfigFlags_DockingEnable = ::ImGuiConfigFlags_DockingEnable;
+    inline constexpr int Cond_FirstUseEver         = ::ImGuiCond_FirstUseEver;
+}
+#endif

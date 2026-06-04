@@ -41,6 +41,21 @@ alias — the rest of the consumer code is identical. Cross-platform GL/GLSL
 configuration (incl. macOS forward-compat) is handled by `RecommendedGlConfig()`,
 which `CreateWindow`/`Init` use by default.
 
+## Features
+
+- `docking` — exports the Dock* API surface (`DockSpace`, `DockSpaceOverViewport`,
+  `SetNextWindowDockID`, `IsWindowDocked`, ...) and makes the `imgui.app` facade
+  enable `ImGuiConfigFlags_DockingEnable` automatically:
+
+  ```toml
+  [dependencies]
+  imgui = { version = "0.0.4", features = ["docking"] }
+  ```
+
+  See `examples/docking/`. Sources come from upstream's docking tag
+  (`compat.imgui 1.92.8-docking`, a superset of mainline — identical behavior
+  while the feature is off).
+
 ## Dependencies
 
 The root package depends on:

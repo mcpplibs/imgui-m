@@ -102,3 +102,9 @@ jobs:
         run: |
           cd examples/glfw_opengl3
           mcpp build
+
+      - name: Build docking example (features=["docking"])
+        shell: bash
+        run: |
+          cd examples/docking
+          mcpp build
