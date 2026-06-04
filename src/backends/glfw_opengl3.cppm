@@ -62,6 +62,10 @@ export namespace ImGui::Backend {
             GlfwPlatform::MakeContextCurrent(window);
         }
 
+        static Window* GetCurrentContext() {
+            return GlfwPlatform::GetCurrentContext();
+        }
+
         static void SwapInterval(int interval) {
             GlfwPlatform::SwapInterval(interval);
         }
