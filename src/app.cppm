@@ -57,6 +57,11 @@ export namespace ImGui::App {
         // `docking` feature: enable dockable windows out of the box.
         ImGui::GetIO().ConfigFlags |= ImGui::ConfigFlags_DockingEnable;
 #endif
+#ifdef MCPP_FEATURE_VIEWPORTS
+        // `viewports` feature: windows dragged outside the main window
+        // detach into real OS windows.
+        ImGui::GetIO().ConfigFlags |= ImGui::ConfigFlags_ViewportsEnable;
+#endif
 
         if (!Backend::Init(window)) {
             const auto error = Backend::LastError();
@@ -84,6 +89,15 @@ export namespace ImGui::App {
             Backend::ClearColor(0.10f, 0.10f, 0.12f, 1.0f);
             Backend::ClearColorBuffer();
             Backend::RenderDrawData(ImGui::GetDrawData());
+#ifdef MCPP_FEATURE_VIEWPORTS
+            // Render the detached OS windows, then restore the main context.
+            {
+                auto* backup = Backend::GetCurrentContext();
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+                Backend::MakeContextCurrent(backup);
+            }
+#endif
             Backend::SwapBuffers(window);
         }
 

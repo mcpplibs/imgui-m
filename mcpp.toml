@@ -27,6 +27,9 @@ default = []
 # docking: export the Dock* API surface and auto-enable
 # ImGuiConfigFlags_DockingEnable in the imgui.app facade.
 docking = []
+# viewports: ImGui windows dragged outside the main window detach into real
+# OS windows (multi-viewport). Usually combined with docking.
+viewports = []
 
 [dependencies]
 compat.imgui = "1.92.8-docking"

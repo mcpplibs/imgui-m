@@ -65,3 +65,18 @@ export namespace ImGui {
     inline constexpr ::ImGuiDir Dir_Down  = ::ImGuiDir_Down;
 }
 #endif
+
+// Multi-viewport surface — gated by the `viewports` feature: ImGui windows
+// dragged (or positioned) outside the main window become real OS windows.
+#ifdef MCPP_FEATURE_VIEWPORTS
+export using ImGuiViewport = ::ImGuiViewport;
+
+export namespace ImGui {
+    using ::ImGui::GetMainViewport;
+    using ::ImGui::UpdatePlatformWindows;
+    using ::ImGui::RenderPlatformWindowsDefault;
+    using ::ImGui::SetNextWindowPos;
+
+    inline constexpr int ConfigFlags_ViewportsEnable = ::ImGuiConfigFlags_ViewportsEnable;
+}
+#endif

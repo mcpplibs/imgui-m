@@ -1,9 +1,11 @@
-// Docking demo — `imgui = { ..., features = ["docking"] }`.
+// Docking + multi-viewport demo —
+//   imgui = { ..., features = ["docking", "viewports"] }
 //
 // On the first frame, DockBuilder splits the dockspace into an IDE-style
 // layout (Scene | Viewport | Inspector, Console at the bottom). Every pane is
-// a real dock node: drag any tab to re-split, stack, or float it — the
-// docking previews/overlays appear while dragging.
+// a real dock node: drag any tab to re-split, stack, or float it.
+// With `viewports`, drag a tab OUTSIDE the main window and it detaches into
+// its own OS window; the "Detached" panel below starts outside on purpose.
 import imgui.core;
 import imgui.app;
 
@@ -44,6 +46,17 @@ int main() {
 
         ImGui::Begin("Console");
         ImGui::TextUnformatted("Log pane (bottom split).");
+        ImGui::End();
+
+        // Starts OUTSIDE the main window: with `viewports` this is a real,
+        // separate OS window from the very first frame.
+        const auto* main_vp = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(
+            ImVec2{main_vp->Pos.x + main_vp->Size.x + 60.0f, main_vp->Pos.y + 80.0f},
+            ImGui::Cond_FirstUseEver);
+        ImGui::Begin("Detached");
+        ImGui::TextUnformatted("I live in my own OS window.");
+        ImGui::TextUnformatted("Drag me back inside to re-dock.");
         ImGui::End();
     });
 }

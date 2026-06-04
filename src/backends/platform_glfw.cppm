@@ -71,6 +71,10 @@ export namespace ImGui::Backend {
             glfwMakeContextCurrent(window);
         }
 
+        static Window* GetCurrentContext() {
+            return glfwGetCurrentContext();
+        }
+
         static FbSize FramebufferSize(Window* window) {
             int width = 0;
             int height = 0;
