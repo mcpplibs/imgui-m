@@ -1,6 +1,10 @@
 module;
 
 #include <imgui.h>
+#ifdef MCPP_FEATURE_DOCKING
+// DockBuilder (programmatic dock layouts) lives in the internal header.
+#include <imgui_internal.h>
+#endif
 
 export module imgui.core;
 
@@ -42,9 +46,22 @@ export namespace ImGui {
     using ::ImGui::GetWindowDockID;
     using ::ImGui::IsWindowDocked;
 
+    // DockBuilder — programmatic dock layouts (e.g. an IDE-style default
+    // split). Upstream ships it in imgui_internal.h; the docking feature
+    // exports the minimal stable surface needed to build layouts.
+    using ::ImGui::DockBuilderSplitNode;
+    using ::ImGui::DockBuilderDockWindow;
+    using ::ImGui::DockBuilderFinish;
+
     // Unscoped global enumerators, re-exported as namespaced constants for
     // module consumers.
     inline constexpr int ConfigFlags_DockingEnable = ::ImGuiConfigFlags_DockingEnable;
     inline constexpr int Cond_FirstUseEver         = ::ImGuiCond_FirstUseEver;
+    // Typed as the underlying enum so they pass straight into
+    // DockBuilderSplitNode without the consumer naming ImGuiDir.
+    inline constexpr ::ImGuiDir Dir_Left  = ::ImGuiDir_Left;
+    inline constexpr ::ImGuiDir Dir_Right = ::ImGuiDir_Right;
+    inline constexpr ::ImGuiDir Dir_Up    = ::ImGuiDir_Up;
+    inline constexpr ::ImGuiDir Dir_Down  = ::ImGuiDir_Down;
 }
 #endif
