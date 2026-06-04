@@ -30,6 +30,9 @@ docking = []
 # viewports: ImGui windows dragged outside the main window detach into real
 # OS windows (multi-viewport). Usually combined with docking.
 viewports = []
+# Convenience bundle: the full docking experience (dockable panels + windows
+# that detach into real OS windows). Equivalent to ["docking", "viewports"].
+docking-full = ["docking", "viewports"]
 
 [dependencies]
 compat.imgui = "1.92.8-docking"
