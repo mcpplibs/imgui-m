@@ -1,139 +1,35 @@
 # imgui
 
-C++23 module package for Dear ImGui on mcpp.
+> Dear ImGui 的 C++23 模块化封装 — `import` 即用 · 跨平台 · 特性可插拔
 
-This package uses `compat.imgui` for upstream Dear ImGui sources and provides
-module interfaces for the core API plus GLFW/OpenGL3 backend entry points.
+[![Release](https://img.shields.io/github/v/release/mcpplibs/imgui-m)](https://github.com/mcpplibs/imgui-m/releases)
+[![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
+[![Module](https://img.shields.io/badge/module-ok-green.svg)](https://en.cppreference.com/w/cpp/language/modules)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Modules
+| [mcpp 构建工具](https://github.com/mcpp-community/mcpp) · [包索引 mcpp-index](https://github.com/mcpp-community/mcpp-index) · [Dear ImGui 上游](https://github.com/ocornut/imgui) · [Issues](https://github.com/mcpplibs/imgui-m/issues) · [Releases](https://github.com/mcpplibs/imgui-m/releases) |
+|:---:|
+| [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml) |
 
-Three tiers of consumer UX:
+## 核心特性
 
-- **Tier-0** `imgui.app` — the convenience facade. Owns the whole window/context
-  lifecycle; you supply only a per-frame UI callback.
-- **Tier-1** automatic via the `imgui.backend` contract — write backend-agnostic
-  code against the `BackendApi` concept and shared types.
-- **Tier-2** explicit `imgui.backend.<impl>` — import a concrete backend module
-  and alias it (`using Backend = ...;`); swap backend with one import + alias.
+- **纯模块导入** — `import imgui.core;`,消费者代码零 `#include`
+- **三档使用体验** — `imgui.app` 一行出窗口(默认档)/ `imgui.backend` 编译期契约(自动档)/ `imgui.backend.<impl>` 显式选后端(专家档),换后端 = 改一行 import + alias
+- **特性可插拔** — `features = ["docking-full"]` 解锁面板停靠 + 拖出主窗口变独立 OS 窗口
+- **不绑定工具链、不打包 GL 驱动** — Linux / macOS / Windows 三平台 CI;GL 运行时由 mcpp 生态自动闭合
 
-- `imgui.app`
-  - Tier-0 facade. `ImGui::App::run(opts, ui)` / `ImGui::App::run(ui)` drive the
-    full GLFW/OpenGL3 lifecycle using the default backend. `export import`s
-    `imgui.core` so a consumer gets the `ImGui::*` surface for free.
-- `imgui.core`
-  - Core Dear ImGui context, frame, widget, and draw-data APIs.
-- `imgui.backend`
-  - Generic backend abstraction layer: shared value types (`GlConfig`, `Error`,
-    `FbSize`), `RecommendedGlConfig()` cross-platform defaults, and the
-    compile-time `BackendApi` contract every backend satisfies. No platform code.
-- `imgui.backend.platform.glfw`
-  - GLFW platform piece: window/event management + `ImGui_ImplGlfw_*` binding.
-- `imgui.backend.renderer.opengl3`
-  - OpenGL3 renderer piece: GL framebuffer ops + `ImGui_ImplOpenGL3_*` binding.
-- `imgui.backend.glfw_opengl3`
-  - Concrete backend: assembles the GLFW platform and OpenGL3 renderer pieces
-    into a single `ImGui::Backend::GlfwOpenGL3` type satisfying `BackendApi`.
-    Re-exports `imgui.backend` (shared types) but **not** `imgui.core`.
-
-Backends expose one `Backend` type with a uniform static API, so swapping
-backend is just a different `import` plus a one-line `using Backend = ...;`
-alias — the rest of the consumer code is identical. Cross-platform GL/GLSL
-configuration (incl. macOS forward-compat) is handled by `RecommendedGlConfig()`,
-which `CreateWindow`/`Init` use by default.
-
-## Features
-
-- `docking` — dockable panels inside the main window (Wayland-safe). Exports the Dock* API surface (`DockSpace`, `DockSpaceOverViewport`,
-  `SetNextWindowDockID`, `IsWindowDocked`, ...) and makes the `imgui.app` facade
-  enable `ImGuiConfigFlags_DockingEnable` automatically:
-
-  ```toml
-  [dependencies]
-  imgui = { version = "0.0.4", features = ["docking"] }
-  ```
-
-- `viewports` — panels dragged (or positioned) outside the main window detach
-  into real OS windows (multi-viewport). X11/Windows/macOS; note GLFW/Wayland
-  does not support it upstream.
-- `docking-full = ["docking", "viewports"]` — convenience bundle: the full
-  docking experience.
-
-  ```toml
-  [dependencies]
-  imgui = { version = "0.0.5", features = ["docking-full"] }
-  ```
-
-  See `examples/docking/`. Sources come from upstream's docking tag
-  (`compat.imgui 1.92.8-docking`, a superset of mainline — identical behavior
-  while the features are off).
-
-## Dependencies
-
-The root package depends on:
-
-- `compat.imgui = "1.92.8"`
-- `compat.glfw = "3.4"`
-- `compat.opengl = "2026.05.31"`
-
-The repository does not vendor Dear ImGui sources. Source and header files come
-from compat packages through mcpp dependency metadata.
-
-### Toolchain and GL runtime
-
-The package does not pin a toolchain; mcpp resolves the environment/default
-toolchain. The GL runtime is closed by mcpp/mcpp-index (`compat.glx-runtime`,
-pulled in transitively by `compat.glfw` on Linux), not bundled by this package.
-
-## Quick Start
+## 快速开始
 
 ```bash
-mcpp build
-mcpp test
-cd examples/basic
-mcpp run
+mcpp new myapp --template gui && cd myapp && mcpp run   # 窗口直接出现
 ```
 
-Expected headless example output:
-
-```text
-Dear ImGui 1.92.8 module frame ok
-```
-
-## Backend Example
-
-The minimal GLFW/OpenGL3 window example uses the combined backend module and
-does not use `#include` in consumer code:
-
-```bash
-cd examples/minimal_window
-mcpp build
-mcpp run
-```
-
-It requires an OpenGL runtime that is visible to the mcpp/xlings runtime. If
-GLFW cannot create the window, the example prints the GLFW error text. The
-`compat.opengl` package supplies OpenGL registry/header content; it does not
-bundle a platform `libGL`/GLX runtime.
-
-The larger GLFW/OpenGL3 example builds on CI but should be run only in an
-environment with a working display and OpenGL context:
-
-```bash
-cd examples/glfw_opengl3
-mcpp build
-mcpp run
-```
-
-## Consumer Usage
+或在已有项目中手动接入:
 
 ```toml
 [dependencies]
-imgui = "0.0.1"
+imgui = "0.0.5"
 ```
-
-Then import the modules you need.
-
-Tier-0 (`imgui.app` facade — least code):
 
 ```cpp
 import imgui.core;
@@ -141,67 +37,61 @@ import imgui.app;
 
 int main() {
     return ImGui::App::run([] {
-        ImGui::Begin("hi");
-        ImGui::TextUnformatted("imgui.app facade");
+        ImGui::Begin("hello");
+        ImGui::TextUnformatted("mcpp + imgui");
         ImGui::End();
     });
 }
 ```
 
-Tier-2 (explicit backend module + alias — full control):
+## 模块一览
 
-```cpp
-import imgui.core;
-import imgui.backend.glfw_opengl3;
-using Backend = ImGui::Backend::GlfwOpenGL3;   // swap import + alias to switch backends
+| 模块 | 说明 |
+|---|---|
+| `imgui.core` | Dear ImGui 核心:context / frame / widgets / draw-data |
+| `imgui.app` | Tier-0 facade:平台默认后端 + 一行帧循环 |
+| `imgui.backend` | 后端契约:`BackendApi` concept + 共享类型(`GlConfig`/`Error`/`FbSize`) |
+| `imgui.backend.glfw_opengl3` | GLFW + OpenGL3 窗口后端(单一 `Backend` 类型) |
+| `imgui.backend.headless` | 无显示后端:同一业务循环跑 CI / 逻辑测试 |
 
-int main() {
-    Backend::InitGlfw();
-    auto* window = Backend::CreateWindow(960, 540, "demo");   // cross-platform GL hints
-    Backend::MakeContextCurrent(window);
+后端实现模块**不 re-export** `imgui.core`,消费者需各自显式 `import`;换后端只改 import 行与一行 `using Backend = ...;`。
 
-    ImGuiContext* context = ImGui::CreateContext();
-    ImGui::SetCurrentContext(context);
-    Backend::Init(window);                                    // RecommendedGlConfig() default
-    // ... frame loop: Backend::NewFrame / ImGui::* / Backend::RenderDrawData ...
-    Backend::Shutdown();
-    ImGui::DestroyContext(context);
-    Backend::DestroyWindow(window);
-    Backend::TerminateGlfw();
-}
+## Features
+
+| Feature | 说明 |
+|---|---|
+| `docking` | 主窗口内面板停靠(Wayland 安全) |
+| `viewports` | 面板拖出主窗口分离为独立 OS 窗口(X11 / Windows / macOS) |
+| `docking-full` | 组合糖 = `["docking", "viewports"]`,完整 docking 体验 |
+
+```toml
+[dependencies]
+imgui = { version = "0.0.5", features = ["docking-full"] }
 ```
 
-## Module Surface
+docking/viewports 源码来自上游 docking tag(`compat.imgui 1.92.8-docking`,主线超集——特性关闭时行为与主线一致)。需 mcpp ≥ 0.0.47。
 
-`src/core.cppm` wraps `imgui.h` through a global module fragment and exports a
-tested core API surface:
+## 示例
 
-- Types: `ImGuiContext`, `ImFontAtlas`, `ImGuiIO`, `ImDrawData`, `ImVec2`,
-  `ImVec4`.
-- Functions: context lifecycle, `GetIO`, `NewFrame`, `Begin`, `Button`,
-  `TextUnformatted`, `End`, `Render`, and `GetDrawData`.
+| 示例 | 内容 |
+|---|---|
+| [`examples/app_minimal`](examples/app_minimal) | facade 三行出窗口 |
+| [`examples/docking`](examples/docking) | IDE 式四分屏 + 面板分离为独立 OS 窗口 |
+| [`examples/minimal_window`](examples/minimal_window) | 显式后端 API 的最小窗口(带诊断) |
+| [`examples/glfw_opengl3`](examples/glfw_opengl3) | 显式后端的完整事件循环 |
+| [`examples/basic`](examples/basic) | headless 核心 API(CI 可跑) |
 
-`imgui.core` exports a curated core subset; for rarely used APIs not yet
-exported, a consumer translation unit can still `#include <imgui.h>` directly
-alongside the module imports.
+```bash
+cd examples/docking && mcpp run
+```
 
-Backend modules adapt the official Dear ImGui backend headers internally and
-expose a single `Backend` type per backend (uniform static API constrained by
-`ImGui::Backend::BackendApi`). Consumer code only needs module imports for the
-surfaces exposed by this package.
+## 工具链与运行时
 
-## Verification
+包不固定工具链(mcpp 解析环境默认,如 Linux glibc gcc);GL/GLX 运行时由生态包 `compat.glx-runtime` 透传闭合,不打包驱动。解析结果可用 `mcpp why` / `mcpp self doctor` 查看。
 
-The `0.0.1` release state is verified with mcpp `0.0.44`:
-
-- `mcpp build`
-- `mcpp test`
-- `cd examples/basic && mcpp run`
-- `cd examples/app_minimal && mcpp build`
-- `cd examples/minimal_window && mcpp build`
-- `cd examples/glfw_opengl3 && mcpp build`
+> [!NOTE]
+> 早期版本,接口可能调整。问题与想法欢迎提 [issue](https://github.com/mcpplibs/imgui-m/issues)。
 
 ## License
 
-The wrapper code in this repository is MIT licensed. Dear ImGui is MIT licensed
-and provided by the `compat.imgui` package.
+封装代码 MIT;Dear ImGui 本体 MIT(经 `compat.imgui` 提供)。
