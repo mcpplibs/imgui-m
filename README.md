@@ -21,14 +21,17 @@
 ## 快速开始
 
 ```bash
-mcpp new myapp --template gui && cd myapp && mcpp run   # 窗口直接出现
+mcpp new myapp --template imgui && cd myapp && mcpp run    # 窗口直接出现
+# 模板随库分发、版本自动对齐:
+#   mcpp new --list-templates imgui          # 列出库提供的模板
+#   mcpp new ide --template imgui:docking    # IDE 式停靠布局(docking-full)
 ```
 
 或在已有项目中手动接入:
 
 ```toml
 [dependencies]
-imgui = "0.0.5"
+imgui = "0.0.6"
 ```
 
 ```cpp
@@ -66,7 +69,7 @@ int main() {
 
 ```toml
 [dependencies]
-imgui = { version = "0.0.5", features = ["docking-full"] }
+imgui = { version = "0.0.6", features = ["docking-full"] }
 ```
 
 docking/viewports 源码来自上游 docking tag(`compat.imgui 1.92.8-docking`,主线超集——特性关闭时行为与主线一致)。需 mcpp ≥ 0.0.47。
