@@ -43,7 +43,7 @@ which `CreateWindow`/`Init` use by default.
 
 ## Features
 
-- `docking` — exports the Dock* API surface (`DockSpace`, `DockSpaceOverViewport`,
+- `docking` — dockable panels inside the main window (Wayland-safe). Exports the Dock* API surface (`DockSpace`, `DockSpaceOverViewport`,
   `SetNextWindowDockID`, `IsWindowDocked`, ...) and makes the `imgui.app` facade
   enable `ImGuiConfigFlags_DockingEnable` automatically:
 
@@ -52,9 +52,20 @@ which `CreateWindow`/`Init` use by default.
   imgui = { version = "0.0.4", features = ["docking"] }
   ```
 
+- `viewports` — panels dragged (or positioned) outside the main window detach
+  into real OS windows (multi-viewport). X11/Windows/macOS; note GLFW/Wayland
+  does not support it upstream.
+- `docking-full = ["docking", "viewports"]` — convenience bundle: the full
+  docking experience.
+
+  ```toml
+  [dependencies]
+  imgui = { version = "0.0.5", features = ["docking-full"] }
+  ```
+
   See `examples/docking/`. Sources come from upstream's docking tag
   (`compat.imgui 1.92.8-docking`, a superset of mainline — identical behavior
-  while the feature is off).
+  while the features are off).
 
 ## Dependencies
 

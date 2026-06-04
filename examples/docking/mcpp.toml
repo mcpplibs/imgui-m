@@ -5,4 +5,4 @@ description = "Dockable-windows demo using the imgui `docking` feature"
 license     = "MIT"
 
 [dependencies]
-imgui = { path = "../..", features = ["docking", "viewports"] }
+imgui = { path = "../..", features = ["docking-full"] }
