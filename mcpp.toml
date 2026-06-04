@@ -1,6 +1,6 @@
 [package]
 name        = "imgui"
-version     = "0.0.5"
+version     = "0.0.6"
 description = "Dear ImGui core and GLFW/OpenGL3 backend modules for mcpp"
 license     = "MIT"
 authors     = ["imgui module contributors"]
