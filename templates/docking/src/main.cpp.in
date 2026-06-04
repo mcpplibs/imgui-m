@@ -1,0 +1,31 @@
+// {{project.name}} — generated from {{self.name}}@{{self.version}}:docking
+import imgui.core;
+import imgui.app;
+
+int main() {
+    return ImGui::App::run({.title = "{{project.name}}"}, [] {
+        auto dockspace = ImGui::DockSpaceOverViewport();
+
+        static bool layout_built = false;
+        if (!layout_built) {
+            layout_built = true;
+            const auto root = dockspace;
+            auto left  = ImGui::DockBuilderSplitNode(
+                dockspace, ImGui::Dir_Left, 0.22f, nullptr, &dockspace);
+            auto down  = ImGui::DockBuilderSplitNode(
+                dockspace, ImGui::Dir_Down, 0.28f, nullptr, &dockspace);
+            auto right = ImGui::DockBuilderSplitNode(
+                dockspace, ImGui::Dir_Right, 0.30f, nullptr, &dockspace);
+            ImGui::DockBuilderDockWindow("Scene",     left);
+            ImGui::DockBuilderDockWindow("Console",   down);
+            ImGui::DockBuilderDockWindow("Inspector", right);
+            ImGui::DockBuilderDockWindow("Viewport",  dockspace);
+            ImGui::DockBuilderFinish(root);
+        }
+
+        ImGui::Begin("Scene");     ImGui::TextUnformatted("scene tree");  ImGui::End();
+        ImGui::Begin("Viewport");  ImGui::TextUnformatted("drag tabs to re-split / detach"); ImGui::End();
+        ImGui::Begin("Inspector"); ImGui::TextUnformatted("properties");  ImGui::End();
+        ImGui::Begin("Console");   ImGui::TextUnformatted("logs");        ImGui::End();
+    });
+}

@@ -1,0 +1,3 @@
+[template]
+description  = "IDE-style docking layout + detachable OS windows (docking-full)"
+post_message = "`mcpp run`: four docked panes; drag a tab outside to detach it."

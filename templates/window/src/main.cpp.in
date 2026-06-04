@@ -1,0 +1,11 @@
+// {{project.name}} — generated from {{self.name}}@{{self.version}}:window
+import imgui.core;
+import imgui.app;
+
+int main() {
+    return ImGui::App::run({.title = "{{project.name}}"}, [] {
+        ImGui::Begin("{{project.name}}");
+        ImGui::TextUnformatted("Hello from mcpp + imgui");
+        ImGui::End();
+    });
+}
