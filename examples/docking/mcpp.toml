@@ -1,0 +1,8 @@
+[package]
+name        = "imgui-docking"
+version     = "0.1.0"
+description = "Dockable-windows demo using the imgui `docking` feature"
+license     = "MIT"
+
+[dependencies]
+imgui = { path = "../..", features = ["docking"] }

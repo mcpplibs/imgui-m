@@ -22,8 +22,14 @@ sources = [
   "src/backends/opengl3_impl.cpp",
 ]
 
+[features]
+default = []
+# docking: export the Dock* API surface and auto-enable
+# ImGuiConfigFlags_DockingEnable in the imgui.app facade.
+docking = []
+
 [dependencies]
-compat.imgui = "1.92.8"
+compat.imgui = "1.92.8-docking"
 compat.glfw = "3.4"
 compat.opengl = "2026.05.31"
 
