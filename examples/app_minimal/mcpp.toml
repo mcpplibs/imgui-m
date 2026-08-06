@@ -5,4 +5,4 @@ description = "Tier-0 imgui.app facade consumer"
 license     = "MIT"
 
 [dependencies]
-imgui = { path = "../.." }
+imgui = { path = "../..", features = ["app"] }
