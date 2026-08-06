@@ -1,7 +1,14 @@
+# The namespace names whose library this is, not who packaged it. Dear ImGui is
+# ocornut's; this repository only adds the C++23 module layer over it. The
+# version is upstream's, for the same reason: `0.0.6` told a consumer nothing
+# about which ImGui they were getting.
+#
+# See mcpp-index#163 for the ecosystem-wide rule and the migration table.
 [package]
+namespace   = "ocornut"
 name        = "imgui"
-version     = "0.0.6"
-description = "Dear ImGui core and GLFW/OpenGL3 backend modules for mcpp"
+version     = "1.92.8"
+description = "Dear ImGui 1.92.8 core and GLFW/OpenGL3 backend modules for mcpp"
 license     = "MIT"
 authors     = ["imgui module contributors"]
 repo        = "https://github.com/mcpplibs/imgui-m"
@@ -9,10 +16,12 @@ repo        = "https://github.com/mcpplibs/imgui-m"
 [lib]
 path = "src/core.cppm"
 
+# `src/app.cppm` is NOT here — it is behind the `app` feature below. Everything
+# that remains corresponds to something upstream Dear ImGui actually ships:
+# the core API, and the GLFW/OpenGL3 backends from upstream's own backends/.
 [build]
 sources = [
   "src/core.cppm",
-  "src/app.cppm",
   "src/backends/backend.cppm",
   "src/backends/platform_glfw.cppm",
   "src/backends/renderer_opengl3.cppm",
@@ -24,6 +33,12 @@ sources = [
 
 [features]
 default = []
+# app: the `imgui.app` facade — a run-loop that owns window and context
+# lifecycle so a consumer supplies only a per-frame callback. It is THIS
+# repository's invention, not part of Dear ImGui, which is exactly why it is
+# opt-in: a consumer who wants the native ImGui API should not be handed a
+# framework along with it.
+app = { sources = ["src/app.cppm"] }
 # docking: export the Dock* API surface and auto-enable
 # ImGuiConfigFlags_DockingEnable in the imgui.app facade.
 docking = []

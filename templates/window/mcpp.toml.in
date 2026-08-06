@@ -2,5 +2,7 @@
 name        = "{{project.name}}"
 version     = "0.1.0"
 
-[dependencies]
-{{self.name}} = "{{self.version}}"
+# `ocornut` is spelled out because a template has no {{self.namespace}}
+# variable yet — see mcpp-index#163.
+[dependencies.ocornut]
+{{self.name}} = { version = "{{self.version}}", features = ["app"] }

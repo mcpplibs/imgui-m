@@ -15,7 +15,8 @@
 
 - **纯模块导入** — `import imgui.core;`,消费者代码零 `#include`
 - **三档使用体验** — `imgui.app` 一行出窗口(默认档)/ `imgui.backend` 编译期契约(自动档)/ `imgui.backend.<impl>` 显式选后端(专家档),换后端 = 改一行 import + alias
-- **特性可插拔** — `features = ["docking-full"]` 解锁面板停靠 + 拖出主窗口变独立 OS 窗口
+- **特性可插拔** — `features = ["docking-full"]` 解锁面板停靠 + 拖出主窗口变独立 OS 窗口;`app` 档
+  开启 `imgui.app` facade(它是本仓库的发明,不属于上游 Dear ImGui,所以默认不给)
 - **不绑定工具链、不打包 GL 驱动** — Linux / macOS / Windows 三平台 CI;GL 运行时由 mcpp 生态自动闭合
 
 ## 快速开始
@@ -30,8 +31,8 @@ mcpp new myapp --template imgui && cd myapp && mcpp run    # 窗口直接出现
 或在已有项目中手动接入:
 
 ```toml
-[dependencies]
-imgui = "0.0.6"
+[dependencies.ocornut]
+imgui = { version = "1.92.8", features = ["app"] }
 ```
 
 ```cpp
@@ -68,8 +69,8 @@ int main() {
 | `docking-full` | 组合糖 = `["docking", "viewports"]`,完整 docking 体验 |
 
 ```toml
-[dependencies]
-imgui = { version = "0.0.6", features = ["docking-full"] }
+[dependencies.ocornut]
+imgui = { version = "1.92.8", features = ["docking-full", "app"] }
 ```
 
 docking/viewports 源码来自上游 docking tag(`compat.imgui 1.92.8-docking`,主线超集——特性关闭时行为与主线一致)。需 mcpp ≥ 0.0.47。
