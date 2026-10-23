@@ -99,3 +99,26 @@ cd examples/docking && mcpp run
 ## License
 
 封装代码 MIT;Dear ImGui 本体 MIT(经 `compat.imgui` 提供)。
+
+
+## Current-client quickstart candidate
+
+The wrapper revision is `1.92.8.1`; the upstream C/C++ API and published module
+identity stay unchanged. Development tooling uses mcpp `2026.10.24.1`. Templates
+now write one qualified dependency from `self.name`, without repeating a namespace.
+
+```sh
+mcpp new quickstart --template ocornut.imgui@1.92.8.1:window
+cd quickstart
+mcpp run
+```
+
+This revision is a PR candidate until its source archive and index entry are
+validated. `tools/test_template.py` exercises actual `mcpp new`, checks the
+rendered dependency, strictly builds the candidate and runs it.
+
+Both `window` and `docking` accept `--smoke-test`, render three frames and exit.
+`ImGui::App::Options::max_frames` defaults to 0 (interactive); a nonzero value
+bounds the render loop and still performs normal renderer/window cleanup.
+The candidate index supplies the shared X11 adapter corrections; Linux rendering
+validation uses a virtual display. A successful build alone does not verify GLX.
