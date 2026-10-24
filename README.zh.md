@@ -1,20 +1,17 @@
 # imgui
 
 > Dear ImGui 的 C++23 模块封装，提供可选 app 与 docking 接口。
+> 保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
 
 [English](README.md) · **简体中文**
+
+上游仓库：[ocornut/imgui](https://github.com/ocornut/imgui)
 
 [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
-
-使用 mcpp **2026.10.24.1**。新 mwrap 身份在索引发布后可直接安装。
-
-## 核心特性
-
-保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
 
 ## 快速开始
 
@@ -41,8 +38,14 @@ int main() { ImGui::CreateContext(); ImGui::DestroyContext(); }
 
 ## 特性
 
-`app` 开启帧循环；`docking`、`viewports` 按需叠加，`docking-full` 组合两者。
-供应者为上游 1.92.8-docking，单独记录 docking 来源。
+| Feature | 用途 |
+|---|---|
+| `app` | 应用帧循环 |
+| `docking` | 面板停靠 |
+| `viewports` | 独立系统窗口 |
+| `docking-full` | 组合 docking 与 viewports |
+
+供应者为上游 `1.92.8-docking`；桌面模板需要显示环境。
 
 ## 示例
 

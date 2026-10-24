@@ -1,20 +1,17 @@
 # imgui
 
 > Dear ImGui through C++23 modules, with optional app and docking interfaces.
+> Keep `ImGui::` APIs. Core, backend contracts and the optional app facade remain separate.
 
 **English** · [简体中文](README.zh.md)
+
+Upstream: [ocornut/imgui](https://github.com/ocornut/imgui)
 
 [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
-
-Use mcpp **2026.10.24.1**. The new mwrap identity becomes installable after index publication.
-
-## Characteristics
-
-Keep `ImGui::` APIs. Core, backend contracts and the optional app facade remain separate.
 
 ## Getting started
 
@@ -41,8 +38,14 @@ The root exports `.core` and `.macros`; `.app` is opt-in.
 
 ## Features
 
-`app` enables the run loop; `docking` and `viewports` are additive; `docking-full` combines both.
-The provider is upstream 1.92.8-docking, a separately recorded docking snapshot.
+| Feature | Purpose |
+|---|---|
+| `app` | App frame loop |
+| `docking` | Dockable panels |
+| `viewports` | Separate OS windows |
+| `docking-full` | docking + viewports |
+
+The provider is upstream `1.92.8-docking`; desktop templates need a display.
 
 ## Examples
 
