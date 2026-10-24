@@ -1,17 +1,14 @@
 # imgui
 
 > Dear ImGui 的 C++23 模块封装，提供可选 app 与 docking 接口。
-> 保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
 
-[English](README.md) · **简体中文**
-
-上游仓库：[ocornut/imgui](https://github.com/ocornut/imgui)
-
-[Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
+[English](README.md) · **简体中文** · 上游：[ocornut/imgui](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
+
+保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
 
 ## 快速开始
 
