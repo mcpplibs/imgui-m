@@ -4,8 +4,8 @@ namespace = "mcpplibs.mwrap"
 name = "imgui"
 version = "1.92.8"
 description = "Dear ImGui 1.92.8 core and GLFW/OpenGL3 backend modules for mcpp"
-license     = "MIT"
-authors     = ["imgui module contributors"]
+license = "Apache-2.0"
+authors = ["mcpp-community"]
 repo        = "https://github.com/mcpplibs/imgui-m"
 
 [lib]
@@ -56,3 +56,23 @@ compat.gtest = "1.15.2"
 
 [package.metadata.mwrap]
 upstream-version = "1.92.8"
+
+[[runtime.deploy]]
+from = "LICENSE"
+to = "licenses/imgui"
+
+[[runtime.deploy]]
+from = "NOTICE"
+to = "licenses/imgui"
+
+[[runtime.deploy]]
+from = "upstream/imgui/README.md"
+to = "licenses/imgui/upstream/imgui"
+
+[[runtime.deploy]]
+from = "upstream/imgui/LICENSE.txt"
+to = "licenses/imgui/upstream/imgui"
+
+[[runtime.deploy]]
+from = "upstream/wrapper-legacy/LICENSE"
+to = "licenses/imgui/upstream/wrapper-legacy"
