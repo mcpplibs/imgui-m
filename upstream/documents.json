@@ -1,0 +1,20 @@
+{
+  "upstream": "https://github.com/ocornut/imgui/tree/v1.92.8-docking",
+  "documents": [
+    {
+      "path": "upstream/imgui/README.md",
+      "source": "https://github.com/ocornut/imgui/tree/v1.92.8-docking/docs/README.md",
+      "sha256": "d9fb01b2967dab2fd384567528849529029fb1c6ca111465de58e82a091037c5"
+    },
+    {
+      "path": "upstream/imgui/LICENSE.txt",
+      "source": "https://github.com/ocornut/imgui/tree/v1.92.8-docking/LICENSE.txt",
+      "sha256": "173506a2d6f7fb67990d257fb2507f188690eca39060c39469ae7bef43aae2a3"
+    },
+    {
+      "path": "upstream/wrapper-legacy/LICENSE",
+      "source": "Previous wrapper LICENSE, retained copyright and permission notice",
+      "sha256": "abcaeafcdf897e11a27a6f9148d1fd1e7be3c940e4be0eb3660cd6402b9afe65"
+    }
+  ]
+}

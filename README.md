@@ -5,7 +5,8 @@
 **English** · [简体中文](README.zh.md) · [Upstream](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
 
 Keep `ImGui::` APIs. Core, backend contracts and the optional app facade remain separate.
@@ -61,4 +62,6 @@ Linux, macOS and Windows CI. OpenGL/GLX runtime adapters do not redistribute the
 
 ## License
 
-[MIT](LICENSE); the upstream provider has its own MIT notice.
+[Apache-2.0](LICENSE); the upstream provider has its own MIT notice.
+
+Wrapper: Apache-2.0, mcpp-community. [Original upstream README and licenses](upstream/imgui/). Upstream licenses remain unchanged.

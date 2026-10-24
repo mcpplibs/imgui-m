@@ -5,7 +5,8 @@
 [English](README.md) · **简体中文** · [Upstream](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
 
 保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
@@ -61,4 +62,6 @@ Linux、macOS、Windows CI 覆盖；OpenGL/GLX 运行时适配不分发宿主 GP
 
 ## 许可证
 
-[MIT](LICENSE)；上游供应者保留其 MIT 通知。
+[Apache-2.0](LICENSE)；上游供应者保留其 MIT 通知。
+
+封装：Apache-2.0，mcpp-community。[上游原始 README 与许可证](upstream/imgui/)，上游许可保持原样。
