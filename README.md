@@ -122,3 +122,7 @@ Both `window` and `docking` accept `--smoke-test`, render three frames and exit.
 bounds the render loop and still performs normal renderer/window cleanup.
 The candidate index supplies the shared X11 adapter corrections; Linux rendering
 validation uses a virtual display. A successful build alone does not verify GLX.
+
+The package default is `headless`: `mcpp new quickstart --template ocornut.imgui@1.92.8.1`
+creates a CPU-only frame example that checks real draw vertices and needs no
+desktop session. `:window` and `:docking` remain explicit desktop templates.
