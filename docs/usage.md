@@ -16,9 +16,9 @@ Detailed usage and background. See the [README](../README.md) for the current ca
 ## 核心特性
 
 - **纯模块导入** — `import mcpplibs.mwrap.imgui.core;`,消费者代码零 `#include`
-- **三档使用体验** — `imgui.app` 一行出窗口(默认档)/ `imgui.backend` 编译期契约(自动档)/ `imgui.backend.<impl>` 显式选后端(专家档),换后端 = 改一行 import + alias
+- **三档使用体验** — `mcpplibs.mwrap.imgui.app` 一行出窗口(默认档)/ `mcpplibs.mwrap.imgui.backend` 编译期契约(自动档)/ `imgui.backend.<impl>` 显式选后端(专家档),换后端 = 改一行 import + alias
 - **特性可插拔** — `features = ["docking-full"]` 解锁面板停靠 + 拖出主窗口变独立 OS 窗口;`app` 档
-  开启 `imgui.app` facade(它是本仓库的发明,不属于上游 Dear ImGui,所以默认不给)
+  开启 `mcpplibs.mwrap.imgui.app` facade(它是本仓库的发明,不属于上游 Dear ImGui,所以默认不给)
 - **不绑定工具链、不打包 GL 驱动** — Linux / macOS / Windows 三平台 CI;GL 运行时由 mcpp 生态自动闭合
 
 ## 快速开始
@@ -54,13 +54,13 @@ int main() {
 
 | 模块 | 说明 |
 |---|---|
-| `imgui.core` | Dear ImGui 核心:context / frame / widgets / draw-data |
-| `imgui.app` | Tier-0 facade:平台默认后端 + 一行帧循环 |
-| `imgui.backend` | 后端契约:`BackendApi` concept + 共享类型(`GlConfig`/`Error`/`FbSize`) |
-| `imgui.backend.glfw_opengl3` | GLFW + OpenGL3 窗口后端(单一 `Backend` 类型) |
-| `imgui.backend.headless` | 无显示后端:同一业务循环跑 CI / 逻辑测试 |
+| `mcpplibs.mwrap.imgui.core` | Dear ImGui 核心:context / frame / widgets / draw-data |
+| `mcpplibs.mwrap.imgui.app` | Tier-0 facade:平台默认后端 + 一行帧循环 |
+| `mcpplibs.mwrap.imgui.backend` | 后端契约:`BackendApi` concept + 共享类型(`GlConfig`/`Error`/`FbSize`) |
+| `mcpplibs.mwrap.imgui.backend.glfw_opengl3` | GLFW + OpenGL3 窗口后端(单一 `Backend` 类型) |
+| `mcpplibs.mwrap.imgui.backend.headless` | 无显示后端:同一业务循环跑 CI / 逻辑测试 |
 
-后端实现模块**不 re-export** `imgui.core`,消费者需各自显式 `import`;换后端只改 import 行与一行 `using Backend = ...;`。
+后端实现模块**不 re-export** `mcpplibs.mwrap.imgui.core`,消费者需各自显式 `import`;换后端只改 import 行与一行 `using Backend = ...;`。
 
 ## Features
 

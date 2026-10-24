@@ -2,13 +2,24 @@
 
 > Dear ImGui through C++23 modules, with optional app and docking interfaces.
 
-**English** · [简体中文](README.zh.md) · Upstream: [ocornut/imgui](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
+**English** · [简体中文](README.zh.md) · [Upstream](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
 
 Keep `ImGui::` APIs. Core, backend contracts and the optional app facade remain separate.
+
+## Modules
+
+- `import mcpplibs.mwrap.imgui;`: Core API and macro mappings
+- `import mcpplibs.mwrap.imgui.core;`: Dear ImGui contexts, frames and widgets
+- `import mcpplibs.mwrap.imgui.app;`: Optional app frame loop; requires app
+- `import mcpplibs.mwrap.imgui.backend;`: Backend contracts and shared types
+- `import mcpplibs.mwrap.imgui.backend.headless;`: Display-independent backend
+- `import mcpplibs.mwrap.imgui.backend.glfw_opengl3;`: GLFW/OpenGL3 window backend
+
+> More Modules API -> [Usage and API](docs/usage.md)
 
 ## Getting started
 
@@ -27,11 +38,6 @@ mcpplibs.mwrap.imgui = "1.92.8"
 import mcpplibs.mwrap.imgui;
 int main() { ImGui::CreateContext(); ImGui::DestroyContext(); }
 ```
-
-## Modules
-
-The root exports `.core` and `.macros`; `.app` is opt-in.
-`.backend`, `.backend.headless` and `.backend.glfw_opengl3` keep explicit backend selection.
 
 ## Features
 

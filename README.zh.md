@@ -2,13 +2,24 @@
 
 > Dear ImGui 的 C++23 模块封装，提供可选 app 与 docking 接口。
 
-[English](README.md) · **简体中文** · 上游：[ocornut/imgui](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
+[English](README.md) · **简体中文** · [Upstream](https://github.com/ocornut/imgui) · [Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
 
 保留 `ImGui::` API，core、后端契约与可选 app facade 分层。
+
+## 模块
+
+- `import mcpplibs.mwrap.imgui;`: 核心 API 与宏映射
+- `import mcpplibs.mwrap.imgui.core;`: Dear ImGui 上下文、帧与控件
+- `import mcpplibs.mwrap.imgui.app;`: 可选应用帧循环，需 app feature
+- `import mcpplibs.mwrap.imgui.backend;`: 后端契约与共享类型
+- `import mcpplibs.mwrap.imgui.backend.headless;`: 无显示依赖后端
+- `import mcpplibs.mwrap.imgui.backend.glfw_opengl3;`: GLFW/OpenGL3 窗口后端
+
+> More Modules API -> [模块与 API](docs/usage.md)
 
 ## 快速开始
 
@@ -27,11 +38,6 @@ mcpplibs.mwrap.imgui = "1.92.8"
 import mcpplibs.mwrap.imgui;
 int main() { ImGui::CreateContext(); ImGui::DestroyContext(); }
 ```
-
-## 模块一览
-
-根模块导出 `.core` 与 `.macros`；`.app` 按需启用。
-`.backend`、`.backend.headless`、`.backend.glfw_opengl3` 保留显式后端选择。
 
 ## 特性
 
