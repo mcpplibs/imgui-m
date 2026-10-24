@@ -1,9 +1,13 @@
 // {{project.name}} — generated from {{self.name}}@{{self.version}}:docking
-import imgui.core;
-import imgui.app;
+import std;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.app;
 
-int main() {
-    return ImGui::App::run({.title = "{{project.name}}"}, [] {
+int main(int argc, char** argv) {
+    const bool smoke = argc > 1 && std::string_view(argv[1]) == "--smoke-test";
+    unsigned frames = 0;
+    const int result = ImGui::App::run({.title = "{{project.name}}", .max_frames = smoke ? 3u : 0u}, [&] {
+        ++frames;
         auto dockspace = ImGui::DockSpaceOverViewport();
 
         static bool layout_built = false;
@@ -28,4 +32,6 @@ int main() {
         ImGui::Begin("Inspector"); ImGui::TextUnformatted("properties");  ImGui::End();
         ImGui::Begin("Console");   ImGui::TextUnformatted("logs");        ImGui::End();
     });
+    if (smoke) std::println("Rendered {} ImGui frames", frames);
+    return result != 0 ? result : (smoke && frames != 3 ? 4 : 0);
 }

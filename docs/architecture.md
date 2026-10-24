@@ -6,16 +6,16 @@ upstream source ownership in compat packages.
 ## Goals
 
 - Offer a three-tier consumer UX:
-  - Tier-0 `imgui.app` — convenience facade owning the full lifecycle.
-  - Tier-1 automatic via the `imgui.backend` contract (`BackendApi` concept).
+  - Tier-0 `mcpplibs.mwrap.imgui.app` — convenience facade owning the full lifecycle.
+  - Tier-1 automatic via the `mcpplibs.mwrap.imgui.backend` contract (`BackendApi` concept).
   - Tier-2 explicit `imgui.backend.<impl>` module + alias.
 - Let consumers use explicit module imports:
-  - `import imgui.app;` (Tier-0 facade; `export import`s `imgui.core`)
-  - `import imgui.core;`
-  - `import imgui.backend;` (generic abstraction layer: shared types + contract)
-  - `import imgui.backend.platform.glfw;`
-  - `import imgui.backend.renderer.opengl3;`
-  - `import imgui.backend.glfw_opengl3;`
+  - `import mcpplibs.mwrap.imgui.app;` (Tier-0 facade; `export import`s `mcpplibs.mwrap.imgui.core`)
+  - `import mcpplibs.mwrap.imgui.core;`
+  - `import mcpplibs.mwrap.imgui.backend;` (generic abstraction layer: shared types + contract)
+  - `import mcpplibs.mwrap.imgui.backend.platform.glfw;`
+  - `import mcpplibs.mwrap.imgui.backend.renderer.opengl3;`
+  - `import mcpplibs.mwrap.imgui.backend.glfw_opengl3;`
 - Provide a uniform, compile-time-constrained backend surface so swapping a
   backend is just a different import plus a one-line alias, with cross-platform
   GL/GLSL defaults handled by the abstraction layer.
@@ -52,7 +52,7 @@ upstream source ownership in compat packages.
 
 ## Package Configuration
 
-The root `mcpp.toml` declares package `imgui`, lists the module wrappers and
+The root `mcpp.toml` declares package `mcpplibs.mwrap.imgui`, lists the module wrappers and
 backend implementation translation units, and depends on compat packages:
 
 ```toml
@@ -83,17 +83,17 @@ a transitive dependency of `compat.glfw` on Linux), not bundled by this package.
 
 ## Module Wrappers
 
-`src/core.cppm` adapts upstream `imgui.h` internally, then exports selected
+`src/core.cppm` adapts upstream `mcpplibs.mwrap.imgui.h` internally, then exports selected
 types and functions with explicit `using` declarations. This keeps consumer code
-on `import imgui.core;` instead of requiring direct header usage.
+on `import mcpplibs.mwrap.imgui.core;` instead of requiring direct header usage.
 
 Backend module interfaces similarly adapt the official backend headers
 internally and export explicit wrapper functions. The implementation `.cpp`
 files compile upstream backend sources from `compat.imgui/backends` so consumers
 do not need to copy backend sources into their own package.
 
-`src/app.cppm` (`imgui.app`) is the Tier-0 facade. It `export import`s
-`imgui.core` and privately imports `imgui.backend.glfw_opengl3`, exposing
+`src/app.cppm` (`mcpplibs.mwrap.imgui.app`) is the Tier-0 facade. It `export import`s
+`mcpplibs.mwrap.imgui.core` and privately imports `mcpplibs.mwrap.imgui.backend.glfw_opengl3`, exposing
 `ImGui::App::run(...)` as an inline header-style template (the UI callback is a
 template parameter, so there is no `<functional>` dependency). It drives the
 full lifecycle so a consumer supplies only a per-frame UI callback.

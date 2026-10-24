@@ -4,10 +4,10 @@ module;
 #include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 
-export module imgui.backend.platform.glfw;
+export module mcpplibs.mwrap.imgui.backend.platform.glfw;
 
-import imgui.core;
-import imgui.backend;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.backend;
 
 // GLFW platform piece: window/event management plus the ImGui_ImplGlfw_*
 // platform binding. Reusable assembly unit; composed into a concrete backend

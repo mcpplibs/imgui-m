@@ -1,13 +1,13 @@
-export module imgui.backend;
+export module mcpplibs.mwrap.imgui.backend;
 
-import imgui.core;
+import mcpplibs.mwrap.imgui.core;
 
 // Generic backend abstraction layer.
 //
 // This module owns the shared value types, the cross-platform default GL
 // configuration, and the compile-time API contract every concrete backend
 // must satisfy. It contains no platform code and does not re-export
-// imgui.core: consumers import imgui.core themselves.
+// imgui.core: consumers import mcpplibs.mwrap.imgui.core themselves.
 export namespace ImGui::Backend {
     // Requested OpenGL context configuration. Defaults are filled by
     // RecommendedGlConfig() so examples never hard-code platform values.

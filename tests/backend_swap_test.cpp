@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-import imgui.core;
-import imgui.backend;
-import imgui.backend.headless;
-import imgui.backend.glfw_opengl3;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.backend;
+import mcpplibs.mwrap.imgui.backend.headless;
+import mcpplibs.mwrap.imgui.backend.glfw_opengl3;
 
 namespace B = ImGui::Backend;
 

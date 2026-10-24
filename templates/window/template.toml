@@ -1,4 +1,4 @@
 [template]
 description  = "Minimal imgui.app window"
-default      = true
+default      = false
 post_message = "cd into the project and run `mcpp run` — the window appears."

@@ -1,8 +1,8 @@
-export module imgui.app;
+export module mcpplibs.mwrap.imgui.app;
 
 import std;                          // private: std::println for init diagnostics
-export import imgui.core;            // consumers get the ImGui::* surface for free
-import imgui.backend.glfw_opengl3;   // private: the default concrete backend
+export import mcpplibs.mwrap.imgui.core;            // consumers get the ImGui::* surface for free
+import mcpplibs.mwrap.imgui.backend.glfw_opengl3;   // private: the default concrete backend
 
 // Tier-0 convenience facade.
 //
@@ -17,6 +17,7 @@ export namespace ImGui::App {
         int width = 1280;
         int height = 720;
         const char* title = "mcpp imgui app";
+        unsigned max_frames = 0; // 0 keeps the interactive window open until closed.
     };
 
     // Runs the full GLFW/OpenGL3 lifecycle, calling `ui()` once per frame.
@@ -76,7 +77,9 @@ export namespace ImGui::App {
             return 3;
         }
 
-        while (!Backend::WindowShouldClose(window)) {
+        unsigned frames = 0;
+        while (!Backend::WindowShouldClose(window) &&
+               (opts.max_frames == 0 || frames < opts.max_frames)) {
             Backend::PollEvents();
             Backend::NewFrame();
 
@@ -99,6 +102,7 @@ export namespace ImGui::App {
             }
 #endif
             Backend::SwapBuffers(window);
+            if (opts.max_frames != 0) ++frames;
         }
 
         Backend::Shutdown();

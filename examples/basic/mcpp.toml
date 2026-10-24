@@ -5,4 +5,4 @@ description = "Headless consumer for the imgui.core module"
 license     = "MIT"
 
 [dependencies]
-imgui = { path = "../.." }
+"mcpplibs.mwrap.imgui" = { path = "../.." }

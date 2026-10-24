@@ -1,0 +1,4 @@
+[template]
+description = "Build an ImGui frame without a window, GPU or desktop session"
+default = true
+post_message = "Run `mcpp run` to build and inspect a headless ImGui frame. Use :window or :docking for a desktop app."

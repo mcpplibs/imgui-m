@@ -1,6 +1,6 @@
 import std;
-import imgui.core;
-import imgui.backend.glfw_opengl3;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.backend.glfw_opengl3;
 
 // Swap the import above and this alias to switch backends; the rest is identical.
 using Backend = ImGui::Backend::GlfwOpenGL3;
@@ -39,7 +39,7 @@ int main() {
         ImGui::NewFrame();
         bool open = true;
         ImGui::Begin("mcpp imgui", &open);
-        ImGui::TextUnformatted("Hello from import imgui.backend.glfw_opengl3");
+        ImGui::TextUnformatted("Hello from import mcpplibs.mwrap.imgui.backend.glfw_opengl3");
         if (ImGui::Button("Close")) {
             Backend::SetWindowShouldClose(window, true);
         }

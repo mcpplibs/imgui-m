@@ -5,4 +5,4 @@ description = "GLFW and OpenGL3 consumer for imgui backend modules"
 license     = "MIT"
 
 [dependencies]
-imgui = { path = "../.." }
+"mcpplibs.mwrap.imgui" = { path = "../.." }

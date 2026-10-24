@@ -1,9 +1,9 @@
-export module imgui.backend.glfw_opengl3;
+export module mcpplibs.mwrap.imgui.backend.glfw_opengl3;
 
-import imgui.core;
-export import imgui.backend; // shared types (GlConfig/Error/FbSize) are part of the backend surface
-import imgui.backend.platform.glfw;
-import imgui.backend.renderer.opengl3;
+import mcpplibs.mwrap.imgui.core;
+export import mcpplibs.mwrap.imgui.backend; // shared types (GlConfig/Error/FbSize) are part of the backend surface
+import mcpplibs.mwrap.imgui.backend.platform.glfw;
+import mcpplibs.mwrap.imgui.backend.renderer.opengl3;
 
 // Concrete backend: assembles the GLFW platform piece and the OpenGL3 renderer
 // piece into a single Backend type that satisfies BackendApi. Consumer code is

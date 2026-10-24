@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-import imgui.core;
-import imgui.backend;
-import imgui.backend.platform.glfw;
-import imgui.backend.renderer.opengl3;
-import imgui.backend.glfw_opengl3;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.backend;
+import mcpplibs.mwrap.imgui.backend.platform.glfw;
+import mcpplibs.mwrap.imgui.backend.renderer.opengl3;
+import mcpplibs.mwrap.imgui.backend.glfw_opengl3;
 
 namespace Backend = ImGui::Backend;
 
