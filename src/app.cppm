@@ -1,8 +1,8 @@
-export module imgui.app;
+export module mcpplibs.mwrap.imgui.app;
 
 import std;                          // private: std::println for init diagnostics
-export import imgui.core;            // consumers get the ImGui::* surface for free
-import imgui.backend.glfw_opengl3;   // private: the default concrete backend
+export import mcpplibs.mwrap.imgui.core;            // consumers get the ImGui::* surface for free
+import mcpplibs.mwrap.imgui.backend.glfw_opengl3;   // private: the default concrete backend
 
 // Tier-0 convenience facade.
 //

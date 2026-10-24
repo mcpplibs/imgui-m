@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 import std;
-import imgui.core;
+import mcpplibs.mwrap.imgui.core;
 
 TEST(ImGuiCoreModuleTest, ExposesVersion) {
     const char* version = ImGui::GetVersion();

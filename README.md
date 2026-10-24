@@ -1,46 +1,58 @@
-# imgui-m
+# imgui
 
-Dear ImGui **1.92.8** 的 C++23 模块封装，保留上游 API，提供可选窗口与后端入口。
+> Dear ImGui through C++23 modules, with optional app and docking interfaces.
 
-## 快速开始
+**English** · [简体中文](README.zh.md)
 
-使用 mcpp **2026.10.24.1**。以下为候选版本，索引发布后可直接创建项目。
+[Releases](https://github.com/mcpplibs/imgui-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
+
+[![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mcpplibs/imgui-m/actions/workflows/ci.yml)
+
+Use mcpp **2026.10.24.1**. The new mwrap identity becomes installable after index publication.
+
+## Characteristics
+
+Keep `ImGui::` APIs. Core, backend contracts and the optional app facade remain separate.
+
+## Getting started
 
 ```sh
-mcpp new ui --template ocornut.imgui@1.92.8.1
+mcpp new ui --template mcpplibs.mwrap.imgui@1.92.8
 cd ui
 mcpp run
 ```
 
-默认 `headless` 模板生成并检查绘制顶点，不需要桌面或 GPU。
-桌面项目使用 `:window` 或 `:docking` 模板；它们支持 `--smoke-test`，绘制三帧后退出。
-
-## 已有项目
-
 ```toml
 [dependencies]
-"ocornut.imgui" = { version = "1.92.8.1", features = ["app"] }
+mcpplibs.mwrap.imgui = "1.92.8"
 ```
 
 ```cpp
-import imgui.core;
-import imgui.app;
-int main() {
-    return ImGui::App::run([] {
-        ImGui::Begin("Hello");
-        ImGui::TextUnformatted("Hello from mcpp");
-        ImGui::End();
-    });
-}
+import mcpplibs.mwrap.imgui;
+int main() { ImGui::CreateContext(); ImGui::DestroyContext(); }
 ```
 
-## 能力边界
+## Modules
 
-目标平台为 Linux、macOS、Windows；桌面模板需要可用的窗口系统和 OpenGL 运行环境。
-`app` 启用窗口循环，`docking` 启用停靠，`viewports` 启用独立窗口；`docking-full` 组合后两者。
-`ImGui::App::Options::max_frames` 为 0 时交互运行，非零时限制绘制帧数。
+The root exports `.core` and `.macros`; `.app` is opt-in.
+`.backend`, `.backend.headless` and `.backend.glfw_opengl3` keep explicit backend selection.
 
-## 文档
+## Features
 
-[用法、模块与后端](docs/usage.md) · [无窗口示例](examples/basic) ·
-[桌面示例](examples/app_minimal) · [MIT](LICENSE)
+`app` enables the run loop; `docking` and `viewports` are additive; `docking-full` combines both.
+The provider is upstream 1.92.8-docking, a separately recorded docking snapshot.
+
+## Examples
+
+Default: display-independent context/frame checks. `:window` and `:docking` require a desktop.
+[Examples](examples) · [Usage](docs/usage.md) · [Architecture](docs/architecture.md)
+
+## Build and runtime
+
+Linux, macOS and Windows CI. OpenGL/GLX runtime adapters do not redistribute the host GPU driver.
+
+## License
+
+[MIT](LICENSE); the upstream provider has its own MIT notice.

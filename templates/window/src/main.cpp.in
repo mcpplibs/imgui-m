@@ -1,7 +1,7 @@
 // {{project.name}} — generated from {{self.name}}@{{self.version}}:window
 import std;
-import imgui.core;
-import imgui.app;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.app;
 
 int main(int argc, char** argv) {
     const bool smoke = argc > 1 && std::string_view(argv[1]) == "--smoke-test";

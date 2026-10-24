@@ -37,6 +37,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Mwrap identity and bilingual README contract
+        run: python3 tools/check_mwrap_release.py
+
       - name: Install Xlings (Linux/macOS)
         if: runner.os != 'Windows'
         env:

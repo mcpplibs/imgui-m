@@ -1,26 +1,23 @@
-# The namespace names whose library this is, not who packaged it. Dear ImGui is
-# ocornut's; this repository only adds the C++23 module layer over it. The
-# version is upstream's, for the same reason: `0.0.6` told a consumer nothing
-# about which ImGui they were getting.
-#
-# See mcpp-index#163 for the ecosystem-wide rule and the migration table.
+# Module wrapper; upstream API preserved. Policy: mcpp-index/docs/mwrap.md.
 [package]
-namespace   = "ocornut"
-name        = "imgui"
-version     = "1.92.8.1"
+namespace = "mcpplibs.mwrap"
+name = "imgui"
+version = "1.92.8"
 description = "Dear ImGui 1.92.8 core and GLFW/OpenGL3 backend modules for mcpp"
 license     = "MIT"
 authors     = ["imgui module contributors"]
 repo        = "https://github.com/mcpplibs/imgui-m"
 
 [lib]
-path = "src/core.cppm"
+path = "src/imgui.cppm"
 
 # `src/app.cppm` is NOT here — it is behind the `app` feature below. Everything
 # that remains corresponds to something upstream Dear ImGui actually ships:
 # the core API, and the GLFW/OpenGL3 backends from upstream's own backends/.
 [build]
 sources = [
+  "src/imgui.cppm",
+  "src/macros.cppm",
   "src/core.cppm",
   "src/backends/backend.cppm",
   "src/backends/platform_glfw.cppm",
@@ -56,3 +53,6 @@ compat.opengl = "2026.05.31"
 
 [dev-dependencies]
 compat.gtest = "1.15.2"
+
+[package.metadata.mwrap]
+upstream-version = "1.92.8"

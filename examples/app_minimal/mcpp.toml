@@ -5,4 +5,4 @@ description = "Tier-0 imgui.app facade consumer"
 license     = "MIT"
 
 [dependencies]
-imgui = { path = "../..", features = ["app"] }
+"mcpplibs.mwrap.imgui" = { path = "../..", features = ["app"] }

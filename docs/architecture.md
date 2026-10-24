@@ -10,12 +10,12 @@ upstream source ownership in compat packages.
   - Tier-1 automatic via the `imgui.backend` contract (`BackendApi` concept).
   - Tier-2 explicit `imgui.backend.<impl>` module + alias.
 - Let consumers use explicit module imports:
-  - `import imgui.app;` (Tier-0 facade; `export import`s `imgui.core`)
-  - `import imgui.core;`
-  - `import imgui.backend;` (generic abstraction layer: shared types + contract)
-  - `import imgui.backend.platform.glfw;`
-  - `import imgui.backend.renderer.opengl3;`
-  - `import imgui.backend.glfw_opengl3;`
+  - `import mcpplibs.mwrap.imgui.app;` (Tier-0 facade; `export import`s `imgui.core`)
+  - `import mcpplibs.mwrap.imgui.core;`
+  - `import mcpplibs.mwrap.imgui.backend;` (generic abstraction layer: shared types + contract)
+  - `import mcpplibs.mwrap.imgui.backend.platform.glfw;`
+  - `import mcpplibs.mwrap.imgui.backend.renderer.opengl3;`
+  - `import mcpplibs.mwrap.imgui.backend.glfw_opengl3;`
 - Provide a uniform, compile-time-constrained backend surface so swapping a
   backend is just a different import plus a one-line alias, with cross-platform
   GL/GLSL defaults handled by the abstraction layer.
@@ -85,7 +85,7 @@ a transitive dependency of `compat.glfw` on Linux), not bundled by this package.
 
 `src/core.cppm` adapts upstream `imgui.h` internally, then exports selected
 types and functions with explicit `using` declarations. This keeps consumer code
-on `import imgui.core;` instead of requiring direct header usage.
+on `import mcpplibs.mwrap.imgui.core;` instead of requiring direct header usage.
 
 Backend module interfaces similarly adapt the official backend headers
 internally and export explicit wrapper functions. The implementation `.cpp`

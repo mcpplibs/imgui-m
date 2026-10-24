@@ -6,8 +6,8 @@
 // a real dock node: drag any tab to re-split, stack, or float it.
 // With `viewports`, drag a tab OUTSIDE the main window and it detaches into
 // its own OS window; the "Detached" panel below starts outside on purpose.
-import imgui.core;
-import imgui.app;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.app;
 
 int main() {
     return ImGui::App::run({.title = "mcpp imgui docking demo"}, [] {

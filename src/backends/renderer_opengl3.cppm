@@ -3,10 +3,10 @@ module;
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_opengl3_loader.h>
 
-export module imgui.backend.renderer.opengl3;
+export module mcpplibs.mwrap.imgui.backend.renderer.opengl3;
 
-import imgui.core;
-import imgui.backend;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.backend;
 
 // OpenGL3 renderer piece: GL framebuffer ops plus the ImGui_ImplOpenGL3_*
 // renderer binding. Reusable assembly unit; composed into a concrete backend

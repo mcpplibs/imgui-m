@@ -15,7 +15,7 @@ Detailed usage and background. See the [README](../README.md) for the current ca
 
 ## 核心特性
 
-- **纯模块导入** — `import imgui.core;`,消费者代码零 `#include`
+- **纯模块导入** — `import mcpplibs.mwrap.imgui.core;`,消费者代码零 `#include`
 - **三档使用体验** — `imgui.app` 一行出窗口(默认档)/ `imgui.backend` 编译期契约(自动档)/ `imgui.backend.<impl>` 显式选后端(专家档),换后端 = 改一行 import + alias
 - **特性可插拔** — `features = ["docking-full"]` 解锁面板停靠 + 拖出主窗口变独立 OS 窗口;`app` 档
   开启 `imgui.app` facade(它是本仓库的发明,不属于上游 Dear ImGui,所以默认不给)
@@ -33,13 +33,13 @@ mcpp new myapp --template imgui && cd myapp && mcpp run    # 窗口直接出现
 或在已有项目中手动接入:
 
 ```toml
-[dependencies.ocornut]
+[dependencies.mcpplibs.mwrap]
 imgui = { version = "1.92.8", features = ["app"] }
 ```
 
 ```cpp
-import imgui.core;
-import imgui.app;
+import mcpplibs.mwrap.imgui.core;
+import mcpplibs.mwrap.imgui.app;
 
 int main() {
     return ImGui::App::run([] {
@@ -71,7 +71,7 @@ int main() {
 | `docking-full` | 组合糖 = `["docking", "viewports"]`,完整 docking 体验 |
 
 ```toml
-[dependencies.ocornut]
+[dependencies.mcpplibs.mwrap]
 imgui = { version = "1.92.8", features = ["docking-full", "app"] }
 ```
 
@@ -105,12 +105,12 @@ cd examples/docking && mcpp run
 
 ## Current-client quickstart candidate
 
-The wrapper revision is `1.92.8.1`; the upstream C/C++ API and published module
+The wrapper revision is `1.92.8`; the upstream C/C++ API and published module
 identity stay unchanged. Development tooling uses mcpp `2026.10.24.1`. Templates
 now write one qualified dependency from `self.name`, without repeating a namespace.
 
 ```sh
-mcpp new quickstart --template ocornut.imgui@1.92.8.1:window
+mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8:window
 cd quickstart
 mcpp run
 ```
@@ -125,6 +125,6 @@ bounds the render loop and still performs normal renderer/window cleanup.
 The candidate index supplies the shared X11 adapter corrections; Linux rendering
 validation uses a virtual display. A successful build alone does not verify GLX.
 
-The package default is `headless`: `mcpp new quickstart --template ocornut.imgui@1.92.8.1`
+The package default is `headless`: `mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8`
 creates a CPU-only frame example that checks real draw vertices and needs no
 desktop session. `:window` and `:docking` remain explicit desktop templates.

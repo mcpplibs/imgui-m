@@ -6,7 +6,7 @@ module;
 #include <imgui_internal.h>
 #endif
 
-export module imgui.core;
+export module mcpplibs.mwrap.imgui.core;
 
 export using ImDrawData = ::ImDrawData;
 export using ImGuiContext = ::ImGuiContext;

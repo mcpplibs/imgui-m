@@ -1,5 +1,5 @@
 import std;
-import imgui.core;
+import mcpplibs.mwrap.imgui.core;
 
 int main() {
     ImGuiContext* context = ImGui::CreateContext();
@@ -15,7 +15,7 @@ int main() {
     ImGui::NewFrame();
     bool open = true;
     ImGui::Begin("mcpp imgui", &open);
-    ImGui::TextUnformatted("hello from import imgui.core");
+    ImGui::TextUnformatted("hello from import mcpplibs.mwrap.imgui.core");
     ImGui::End();
     ImGui::Render();
 

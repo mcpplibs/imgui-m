@@ -1,7 +1,7 @@
-export module imgui.backend.headless;
+export module mcpplibs.mwrap.imgui.backend.headless;
 
-import imgui.core;
-export import imgui.backend; // shared types (GlConfig/Error/FbSize) + BackendApi
+import mcpplibs.mwrap.imgui.core;
+export import mcpplibs.mwrap.imgui.backend; // shared types (GlConfig/Error/FbSize) + BackendApi
 
 // Headless backend: a second, display-free BackendApi implementation.
 //
