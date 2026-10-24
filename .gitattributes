@@ -5,3 +5,5 @@
 *.mpp linguist-language=cpp
 *.mpp linguist-detectable=true
 *.mpp linguist-documentation=false
+# Preserve upstream document bytes and original whitespace on every platform.
+upstream/** -text -whitespace
