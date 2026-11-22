@@ -2,7 +2,7 @@
 [package]
 namespace = "mcpplibs.mwrap"
 name = "imgui"
-version = "1.92.8"
+version = "1.92.8.1"
 description = "Dear ImGui 1.92.8 core and GLFW/OpenGL3 backend modules for mcpp"
 license = "Apache-2.0"
 authors = ["mcpp-community"]

@@ -25,14 +25,14 @@
 ## 快速开始
 
 ```sh
-mcpp new ui --template mcpplibs.mwrap.imgui@1.92.8
+mcpp new ui --template mcpplibs.mwrap.imgui@1.92.8.1
 cd ui
 mcpp run
 ```
 
 ```toml
 [dependencies]
-mcpplibs.mwrap.imgui = "1.92.8"
+mcpplibs.mwrap.imgui = "1.92.8.1"
 ```
 
 ```cpp
