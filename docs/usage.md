@@ -105,12 +105,12 @@ cd examples/docking && mcpp run
 
 ## Current-client quickstart candidate
 
-The wrapper revision is `1.92.8`; the upstream C/C++ API and published module
+The wrapper revision is `1.92.8.1`; the upstream C/C++ API and published module
 identity stay unchanged. Development tooling uses mcpp `2026.10.24.1`. Templates
-now write one qualified dependency from `self.name`, without repeating a namespace.
+write one qualified dependency from `self.name`, unquoted, without repeating a namespace.
 
 ```sh
-mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8:window
+mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8.1:window
 cd quickstart
 mcpp run
 ```
@@ -125,6 +125,6 @@ bounds the render loop and still performs normal renderer/window cleanup.
 The candidate index supplies the shared X11 adapter corrections; Linux rendering
 validation uses a virtual display. A successful build alone does not verify GLX.
 
-The package default is `headless`: `mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8`
+The package default is `headless`: `mcpp new quickstart --template mcpplibs.mwrap.imgui@1.92.8.1`
 creates a CPU-only frame example that checks real draw vertices and needs no
 desktop session. `:window` and `:docking` remain explicit desktop templates.
